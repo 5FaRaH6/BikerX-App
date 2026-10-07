@@ -1,32 +1,50 @@
-import { useState } from 'react';
-import { router } from 'expo-router';
-import {ActivityIndicator,KeyboardAvoidingView,Platform,ScrollView,Text,TextInput,TouchableOpacity,View,} from 'react-native';
+import { router } from "expo-router";
+import { useState } from "react";
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import {GoogleSignin,isSuccessResponse,} from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  isSuccessResponse,
+} from "@react-native-google-signin/google-signin";
 
-import { API_URL } from '../services/api';
-import { saveToken } from '../services/authSession';
-import { saveGoogleSession } from '../services/googleSession';
-import { styles } from '../styles/LoginStyles';
+import { API_URL } from "../services/api";
+import { saveToken } from "../services/authSession";
+import { saveGoogleSession } from "../services/googleSession";
+import { styles } from "../styles/LoginStyles";
+import { savePushToken } from '../services/pushNotifications';
+
+
+console.log(
+  'GOOGLE CLIENT LOADED:',
+  !!process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID
+);
 
 GoogleSignin.configure({
   webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
   offlineAccess: false,
 });
-
 export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   async function login() {
-    setError('');
+    setError("");
 
     if (!email.trim() || !password.trim()) {
-      setError('Please enter your email and password.');
+      setError("Please enter your email and password.");
       return;
     }
 
@@ -34,9 +52,9 @@ export default function LoginScreen() {
       setLoading(true);
 
       const response = await fetch(`${API_URL}/Auth/login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: email.trim(),
@@ -47,31 +65,31 @@ export default function LoginScreen() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message || 'Login failed.');
+        setError(data.message || "Login failed.");
         return;
       }
 
       const token = data.token || data.Token;
 
       if (!token) {
-        setError('Token was not returned from the server.');
+        setError("Token was not returned from the server.");
         return;
       }
 
       await saveToken(token, keepLoggedIn);
-      router.replace('/home');
-    }
-    catch (error) {
+      console.log('BEFORE SAVE PUSH TOKEN');
+      await savePushToken();
+      router.replace("/home");
+    } catch (error) {
       console.log(error);
-      setError('Could not connect to the server.');
-    }
-    finally {
+      setError("Could not connect to the server.");
+    } finally {
       setLoading(false);
     }
   }
 
   async function googleLogin() {
-    setError('');
+    setError("");
 
     try {
       setLoading(true);
@@ -86,14 +104,14 @@ export default function LoginScreen() {
       const idToken = result.data.idToken;
 
       if (!idToken) {
-        setError('Google login failed.');
+        setError("Google login failed.");
         return;
       }
 
       const response = await fetch(`${API_URL}/Auth/google-login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ idToken }),
       });
@@ -101,31 +119,30 @@ export default function LoginScreen() {
       const data = await response.json();
 
       if (!response.ok) {
-        if (data.message === 'PROFILE_REQUIRED') {
+        if (data.message === "PROFILE_REQUIRED") {
           saveGoogleSession(idToken, keepLoggedIn);
-          router.push('/google-profile');
+          router.push("/google-profile");
           return;
         }
 
-        setError(data.message || 'Google login failed.');
+        setError(data.message || "Google login failed.");
         return;
       }
 
       const token = data.token || data.Token;
 
       if (!token) {
-        setError('Token was not returned.');
+        setError("Token was not returned.");
         return;
       }
 
       await saveToken(token, keepLoggedIn);
-      router.replace('/home');
-    }
-    catch (error) {
+      await savePushToken();
+      router.replace("/home");
+    } catch (error) {
       console.log(error);
-      setError('Google login failed.');
-    }
-    finally {
+      setError("Google login failed.");
+    } finally {
       setLoading(false);
     }
   }
@@ -133,7 +150,7 @@ export default function LoginScreen() {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <ScrollView
         contentContainerStyle={styles.scroll}
@@ -175,7 +192,7 @@ export default function LoginScreen() {
 
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
               <Text style={styles.showPassword}>
-                {showPassword ? 'Hide' : 'Show'}
+                {showPassword ? "Hide" : "Show"}
               </Text>
             </TouchableOpacity>
           </View>
@@ -185,19 +202,17 @@ export default function LoginScreen() {
               style={styles.keepContainer}
               onPress={() => setKeepLoggedIn(!keepLoggedIn)}
             >
-              <Text style={styles.checkbox}>
-                {keepLoggedIn ? '☑' : '☐'}
-              </Text>
+              <Text style={styles.checkbox}>{keepLoggedIn ? "☑" : "☐"}</Text>
 
               <Text style={styles.keepText}>Keep me logged in</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => router.push('/forgot-password')}>
+            <TouchableOpacity onPress={() => router.push("/forgot-password")}>
               <Text style={styles.forgotText}>Forgot Password?</Text>
             </TouchableOpacity>
           </View>
 
-          {error !== '' && <Text style={styles.error}>{error}</Text>}
+          {error !== "" && <Text style={styles.error}>{error}</Text>}
 
           <TouchableOpacity
             style={styles.loginButton}
@@ -226,15 +241,13 @@ export default function LoginScreen() {
               <Text style={styles.googleIconText}>G</Text>
             </View>
 
-            <Text style={styles.googleButtonText}>
-              Continue with Google
-            </Text>
+            <Text style={styles.googleButtonText}>Continue with Google</Text>
           </TouchableOpacity>
 
           <View style={styles.signupContainer}>
             <Text style={styles.signupText}>Don't have an account?</Text>
 
-            <TouchableOpacity onPress={() => router.push('/signup')}>
+            <TouchableOpacity onPress={() => router.push("/signup")}>
               <Text style={styles.signupLink}>Sign Up</Text>
             </TouchableOpacity>
           </View>

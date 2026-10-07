@@ -1,11 +1,22 @@
-import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
-import {ActivityIndicator,Animated,Image,Modal,NativeScrollEvent,NativeSyntheticEvent,Text,TextInput,TouchableOpacity,View}from 'react-native';
+import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
+import { useEffect, useRef, useState } from "react";
+import {
+  ActivityIndicator,
+  Animated,
+  Image,
+  Modal,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import { API_URL } from '../services/api';
-import { getToken, logout } from '../services/authSession';
-import { styles } from '../styles/HomeStyle';
+import { API_URL } from "../services/api";
+import { getToken, logout } from "../services/authSession";
+import { styles } from "../styles/HomeStyle";
 
 type Post = {
   postId: string;
@@ -45,12 +56,12 @@ type Meetup = {
 };
 
 export default function HomeScreen() {
-  const [activeTab, setActiveTab] = useState<'feed' | 'meetups'>('feed');
+  const [activeTab, setActiveTab] = useState<"feed" | "meetups">("feed");
   const [posts, setPosts] = useState<Post[]>([]);
   const [meetups, setMeetups] = useState<Meetup[]>([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [createOpen, setCreateOpen] = useState(false);
 
   const headerY = useRef(new Animated.Value(0)).current;
@@ -63,14 +74,14 @@ export default function HomeScreen() {
 
   // load home data
   async function loadHome() {
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
       const token = await getToken();
 
       if (!token) {
-        router.replace('/login');
+        router.replace("/login");
         return;
       }
 
@@ -86,12 +97,9 @@ export default function HomeScreen() {
         },
       });
 
-      if (
-        postsResponse.status === 401 ||
-        meetupsResponse.status === 401
-      ) {
+      if (postsResponse.status === 401 || meetupsResponse.status === 401) {
         await logout();
-        router.replace('/login');
+        router.replace("/login");
         return;
       }
 
@@ -99,18 +107,16 @@ export default function HomeScreen() {
       const meetupsData = await meetupsResponse.json();
 
       if (!postsResponse.ok || !meetupsResponse.ok) {
-        setError('Could not load home.');
+        setError("Could not load home.");
         return;
       }
 
       setPosts(postsData);
       setMeetups(meetupsData);
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
-      setError('Could not connect to the server.');
-    }
-    finally {
+      setError("Could not connect to the server.");
+    } finally {
       setLoading(false);
     }
   }
@@ -145,10 +151,7 @@ export default function HomeScreen() {
   function handleScroll(event: NativeSyntheticEvent<NativeScrollEvent>) {
     const currentY = event.nativeEvent.contentOffset.y;
 
-    if (
-      currentY > lastScrollY.current + 8 &&
-      currentY > 40
-    ) {
+    if (currentY > lastScrollY.current + 8 && currentY > 40) {
       hideHeader();
     }
 
@@ -163,15 +166,15 @@ export default function HomeScreen() {
     lastScrollY.current = currentY;
   }
 
-// open post
-function openPost(postId: string) {
-  router.push(`/post-details?postId=${postId}` as any);
-}
+  // open post
+  function openPost(postId: string) {
+    router.push(`/post-details?postId=${postId}` as any);
+  }
 
-// open meetup
-function openMeetup(meetupId: string) {
-  router.push(`/meetup-details?meetupId=${meetupId}` as any);
-}
+  // open meetup
+  function openMeetup(meetupId: string) {
+    router.push(`/meetup-details?meetupId=${meetupId}` as any);
+  }
 
   // change post like
   async function changePostLike(post: Post) {
@@ -180,20 +183,17 @@ function openMeetup(meetupId: string) {
 
       if (!token) return;
 
-      const response = await fetch(
-        `${API_URL}/Posts/${post.postId}/like`,
-        {
-          method: post.isLiked ? 'DELETE' : 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${API_URL}/Posts/${post.postId}/like`, {
+        method: post.isLiked ? "DELETE" : "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) return;
 
       setPosts(
-        posts.map(item =>
+        posts.map((item) =>
           item.postId === post.postId
             ? {
                 ...item,
@@ -202,11 +202,10 @@ function openMeetup(meetupId: string) {
                   ? item.postLikes - 1
                   : item.postLikes + 1,
               }
-            : item
-        )
+            : item,
+        ),
       );
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
     }
   }
@@ -221,17 +220,17 @@ function openMeetup(meetupId: string) {
       const response = await fetch(
         `${API_URL}/Meetups/${meetup.meetupId}/like`,
         {
-          method: meetup.isLiked ? 'DELETE' : 'POST',
+          method: meetup.isLiked ? "DELETE" : "POST",
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       if (!response.ok) return;
 
       setMeetups(
-        meetups.map(item =>
+        meetups.map((item) =>
           item.meetupId === meetup.meetupId
             ? {
                 ...item,
@@ -240,11 +239,10 @@ function openMeetup(meetupId: string) {
                   ? item.meetupLikes - 1
                   : item.meetupLikes + 1,
               }
-            : item
-        )
+            : item,
+        ),
       );
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
     }
   }
@@ -259,17 +257,17 @@ function openMeetup(meetupId: string) {
       const response = await fetch(
         `${API_URL}/Meetups/${meetup.meetupId}/join`,
         {
-          method: meetup.isJoined ? 'DELETE' : 'POST',
+          method: meetup.isJoined ? "DELETE" : "POST",
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       if (!response.ok) return;
 
       setMeetups(
-        meetups.map(item =>
+        meetups.map((item) =>
           item.meetupId === meetup.meetupId
             ? {
                 ...item,
@@ -278,16 +276,15 @@ function openMeetup(meetupId: string) {
                   ? item.meetupParticipants - 1
                   : item.meetupParticipants + 1,
               }
-            : item
-        )
+            : item,
+        ),
       );
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
     }
   }
 
-  const filteredPosts = posts.filter(post => {
+  const filteredPosts = posts.filter((post) => {
     const value = search.toLowerCase();
 
     return (
@@ -298,7 +295,7 @@ function openMeetup(meetupId: string) {
     );
   });
 
-  const filteredMeetups = meetups.filter(meetup => {
+  const filteredMeetups = meetups.filter((meetup) => {
     const value = search.toLowerCase();
 
     return (
@@ -312,10 +309,14 @@ function openMeetup(meetupId: string) {
   function renderPost({ item }: { item: Post }) {
     return (
       <View style={styles.card}>
-
         <TouchableOpacity
           activeOpacity={0.9}
-          onPress={() => openPost(item.postId)}
+          onPress={() =>
+            router.push({
+              pathname: "/post-details",
+              params: { postId: item.postId },
+            })
+          }
         >
           <View style={styles.userRow}>
             {item.userPhoto ? (
@@ -332,9 +333,7 @@ function openMeetup(meetupId: string) {
             )}
 
             <View>
-              <Text style={styles.username}>
-                @{item.username}
-              </Text>
+              <Text style={styles.username}>@{item.username}</Text>
 
               <Text style={styles.smallText}>
                 {new Date(item.createdAt).toLocaleDateString()}
@@ -342,34 +341,21 @@ function openMeetup(meetupId: string) {
             </View>
           </View>
 
-          <Text style={styles.cardTitle}>
-            {item.about}
-          </Text>
+          <Text style={styles.cardTitle}>{item.about}</Text>
 
           {item.description && (
-            <Text style={styles.description}>
-              {item.description}
-            </Text>
+            <Text style={styles.description}>{item.description}</Text>
           )}
 
           {item.imageUrl && (
-            <Image
-              source={{ uri: item.imageUrl }}
-              style={styles.postImage}
-            />
+            <Image source={{ uri: item.imageUrl }} style={styles.postImage} />
           )}
 
           {item.address && (
             <View style={styles.locationRow}>
-              <Ionicons
-                name="location-outline"
-                size={17}
-                color="#39FF14"
-              />
+              <Ionicons name="location-outline" size={17} color="#39FF14" />
 
-              <Text style={styles.location}>
-                {item.address}
-              </Text>
+              <Text style={styles.location}>{item.address}</Text>
             </View>
           )}
         </TouchableOpacity>
@@ -380,31 +366,28 @@ function openMeetup(meetupId: string) {
             onPress={() => changePostLike(item)}
           >
             <Ionicons
-              name={item.isLiked ? 'heart' : 'heart-outline'}
+              name={item.isLiked ? "heart" : "heart-outline"}
               size={22}
-              color={item.isLiked ? '#39FF14' : '#AAAAAA'}
+              color={item.isLiked ? "#39FF14" : "#AAAAAA"}
             />
 
-            <Text style={styles.actionText}>
-              {item.postLikes}
-            </Text>
+            <Text style={styles.actionText}>{item.postLikes}</Text>
           </TouchableOpacity>
 
           {item.allowComments && (
-            <View style={styles.action}>
-              <Ionicons
-                name="chatbubble-outline"
-                size={20}
-                color="#AAAAAA"
-              />
+            <TouchableOpacity
+              style={styles.action}
+              onPress={() => {
+                console.log("COMMENT PRESSED", item.postId);
+                openPost(item.postId);
+              }}
+            >
+              <Ionicons name="chatbubble-outline" size={20} color="#AAAAAA" />
 
-              <Text style={styles.actionText}>
-                {item.postComments}
-              </Text>
-            </View>
+              <Text style={styles.actionText}>{item.postComments}</Text>
+            </TouchableOpacity>
           )}
         </View>
-
       </View>
     );
   }
@@ -413,10 +396,14 @@ function openMeetup(meetupId: string) {
   function renderMeetup({ item }: { item: Meetup }) {
     return (
       <View style={styles.card}>
-
         <TouchableOpacity
           activeOpacity={0.9}
-          onPress={() => openMeetup(item.meetupId)}
+          onPress={() =>
+            router.push({
+              pathname: "/meetup-details",
+              params: { meetupId: item.meetupId },
+            })
+          }
         >
           {item.coverImage && (
             <Image
@@ -425,32 +412,18 @@ function openMeetup(meetupId: string) {
             />
           )}
 
-          <Text style={styles.cardTitle}>
-            {item.title}
-          </Text>
+          <Text style={styles.cardTitle}>{item.title}</Text>
 
-          <Text style={styles.description}>
-            {item.about}
-          </Text>
+          <Text style={styles.description}>{item.about}</Text>
 
           <View style={styles.locationRow}>
-            <Ionicons
-              name="location-outline"
-              size={17}
-              color="#39FF14"
-            />
+            <Ionicons name="location-outline" size={17} color="#39FF14" />
 
-            <Text style={styles.location}>
-              {item.address}
-            </Text>
+            <Text style={styles.location}>{item.address}</Text>
           </View>
 
           <View style={styles.meetupRow}>
-            <Ionicons
-              name="calendar-outline"
-              size={17}
-              color="#AAAAAA"
-            />
+            <Ionicons name="calendar-outline" size={17} color="#AAAAAA" />
 
             <Text style={styles.meetupInfo}>
               {new Date(item.date).toLocaleDateString()}
@@ -458,11 +431,7 @@ function openMeetup(meetupId: string) {
           </View>
 
           <View style={styles.meetupRow}>
-            <Ionicons
-              name="people-outline"
-              size={18}
-              color="#AAAAAA"
-            />
+            <Ionicons name="people-outline" size={18} color="#AAAAAA" />
 
             <Text style={styles.meetupInfo}>
               {item.meetupParticipants} / {item.maxRiders}
@@ -476,48 +445,34 @@ function openMeetup(meetupId: string) {
             onPress={() => changeMeetupLike(item)}
           >
             <Ionicons
-              name={item.isLiked ? 'heart' : 'heart-outline'}
+              name={item.isLiked ? "heart" : "heart-outline"}
               size={22}
-              color={item.isLiked ? '#39FF14' : '#AAAAAA'}
+              color={item.isLiked ? "#39FF14" : "#AAAAAA"}
             />
 
-            <Text style={styles.actionText}>
-              {item.meetupLikes}
-            </Text>
+            <Text style={styles.actionText}>{item.meetupLikes}</Text>
           </TouchableOpacity>
 
           {item.allowComments && (
-            <View style={styles.action}>
-              <Ionicons
-                name="chatbubble-outline"
-                size={20}
-                color="#AAAAAA"
-              />
+            <TouchableOpacity
+              style={styles.action}
+              onPress={() => openMeetup(item.meetupId)}
+            >
+              <Ionicons name="chatbubble-outline" size={20} color="#AAAAAA" />
 
-              <Text style={styles.actionText}>
-                {item.meetupComments}
-              </Text>
-            </View>
+              <Text style={styles.actionText}>{item.meetupComments}</Text>
+            </TouchableOpacity>
           )}
 
           <TouchableOpacity
-            style={[
-              styles.joinButton,
-              item.isJoined && styles.joinedButton,
-            ]}
+            style={[styles.joinButton, item.isJoined && styles.joinedButton]}
             onPress={() => changeJoin(item)}
           >
-            <Text
-              style={[
-                styles.joinText,
-                item.isJoined && styles.joinedText,
-              ]}
-            >
-              {item.isJoined ? 'Joined' : 'Join'}
+            <Text style={[styles.joinText, item.isJoined && styles.joinedText]}>
+              {item.isJoined ? "Joined" : "Join"}
             </Text>
           </TouchableOpacity>
         </View>
-
       </View>
     );
   }
@@ -525,17 +480,13 @@ function openMeetup(meetupId: string) {
   if (loading) {
     return (
       <View style={styles.loading}>
-        <ActivityIndicator
-          size="large"
-          color="#39FF14"
-        />
+        <ActivityIndicator size="large" color="#39FF14" />
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-
       <Animated.View
         style={[
           styles.header,
@@ -549,28 +500,20 @@ function openMeetup(meetupId: string) {
             Biker<Text style={styles.logoGreen}>X</Text>
           </Text>
 
-          <TouchableOpacity>
-            <Ionicons
-              name="notifications-outline"
-              size={25}
-              color="#FFFFFF"
-            />
+          <TouchableOpacity onPress={() => router.push("/notifications")}>
+            <Ionicons name="notifications-outline" size={25} color="#FFFFFF" />
           </TouchableOpacity>
         </View>
 
         <View style={styles.searchContainer}>
-          <Ionicons
-            name="search-outline"
-            size={19}
-            color="#777777"
-          />
+          <Ionicons name="search-outline" size={19} color="#777777" />
 
           <TextInput
             style={styles.search}
             placeholder={
-              activeTab === 'feed'
-                ? 'Search posts or bikers...'
-                : 'Search meetups...'
+              activeTab === "feed"
+                ? "Search posts or bikers..."
+                : "Search meetups..."
             }
             placeholderTextColor="#777777"
             value={search}
@@ -580,19 +523,16 @@ function openMeetup(meetupId: string) {
 
         <View style={styles.tabs}>
           <TouchableOpacity
-            style={[
-              styles.tab,
-              activeTab === 'feed' && styles.activeTab,
-            ]}
+            style={[styles.tab, activeTab === "feed" && styles.activeTab]}
             onPress={() => {
-              setActiveTab('feed');
-              setSearch('');
+              setActiveTab("feed");
+              setSearch("");
             }}
           >
             <Text
               style={[
                 styles.tabText,
-                activeTab === 'feed' && styles.activeTabText,
+                activeTab === "feed" && styles.activeTabText,
               ]}
             >
               Feed
@@ -600,19 +540,16 @@ function openMeetup(meetupId: string) {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[
-              styles.tab,
-              activeTab === 'meetups' && styles.activeTab,
-            ]}
+            style={[styles.tab, activeTab === "meetups" && styles.activeTab]}
             onPress={() => {
-              setActiveTab('meetups');
-              setSearch('');
+              setActiveTab("meetups");
+              setSearch("");
             }}
           >
             <Text
               style={[
                 styles.tabText,
-                activeTab === 'meetups' && styles.activeTabText,
+                activeTab === "meetups" && styles.activeTabText,
               ]}
             >
               Meetups
@@ -621,17 +558,13 @@ function openMeetup(meetupId: string) {
         </View>
       </Animated.View>
 
-      {error !== '' && (
-        <Text style={styles.error}>
-          {error}
-        </Text>
-      )}
+      {error !== "" && <Text style={styles.error}>{error}</Text>}
 
-      {activeTab === 'feed' ? (
+      {activeTab === "feed" ? (
         <Animated.FlatList
           data={filteredPosts}
           renderItem={renderPost}
-          keyExtractor={item => item.postId}
+          keyExtractor={(item) => item.postId}
           onScroll={handleScroll}
           scrollEventThrottle={16}
           showsVerticalScrollIndicator={false}
@@ -639,16 +572,14 @@ function openMeetup(meetupId: string) {
           onRefresh={loadHome}
           refreshing={false}
           ListEmptyComponent={
-            <Text style={styles.emptyText}>
-              No posts yet.
-            </Text>
+            <Text style={styles.emptyText}>No posts yet.</Text>
           }
         />
       ) : (
         <Animated.FlatList
           data={filteredMeetups}
           renderItem={renderMeetup}
-          keyExtractor={item => item.meetupId}
+          keyExtractor={(item) => item.meetupId}
           onScroll={handleScroll}
           scrollEventThrottle={16}
           showsVerticalScrollIndicator={false}
@@ -656,83 +587,51 @@ function openMeetup(meetupId: string) {
           onRefresh={loadHome}
           refreshing={false}
           ListEmptyComponent={
-            <Text style={styles.emptyText}>
-              No meetups yet.
-            </Text>
+            <Text style={styles.emptyText}>No meetups yet.</Text>
           }
         />
       )}
 
       <View style={styles.bottomNav}>
-
         <TouchableOpacity style={styles.navItem}>
-          <Ionicons
-            name="home"
-            size={23}
-            color="#39FF14"
-          />
+          <Ionicons name="home" size={23} color="#39FF14" />
 
-          <Text style={styles.navActiveText}>
-            Home
-          </Text>
+          <Text style={styles.navActiveText}>Home</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.navItem}
-          onPress={() => router.push('/ride-mode')}
+          onPress={() => router.push("/ride-mode")}
         >
-          <Ionicons
-            name="navigate-outline"
-            size={23}
-            color="#777777"
-          />
+          <Ionicons name="navigate-outline" size={23} color="#777777" />
 
-          <Text style={styles.navText}>
-            Ride
-          </Text>
+          <Text style={styles.navText}>Ride</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.addButton}
           onPress={() => setCreateOpen(true)}
         >
-          <Ionicons
-            name="add"
-            size={31}
-            color="#050505"
-          />
+          <Ionicons name="add" size={31} color="#050505" />
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.navItem}
-          onPress={() => router.push('/garage')}
+          onPress={() => router.push("/garage")}
         >
-          <Ionicons
-            name="construct-outline"
-            size={23}
-            color="#777777"
-          />
+          <Ionicons name="construct-outline" size={23} color="#777777" />
 
-          <Text style={styles.navText}>
-            Garage
-          </Text>
+          <Text style={styles.navText}>Garage</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.navItem}
-          onPress={() => router.push('/profile')}
+          onPress={() => router.push("/profile")}
         >
-          <Ionicons
-            name="person-outline"
-            size={23}
-            color="#777777"
-          />
+          <Ionicons name="person-outline" size={23} color="#777777" />
 
-          <Text style={styles.navText}>
-            Profile
-          </Text>
+          <Text style={styles.navText}>Profile</Text>
         </TouchableOpacity>
-
       </View>
 
       <Modal
@@ -742,7 +641,6 @@ function openMeetup(meetupId: string) {
         onRequestClose={() => setCreateOpen(false)}
       >
         <View style={styles.createModalBackground}>
-
           <TouchableOpacity
             style={styles.modalBackdrop}
             activeOpacity={1}
@@ -750,32 +648,23 @@ function openMeetup(meetupId: string) {
           />
 
           <View style={styles.createModal}>
-
             <View style={styles.modalLine} />
 
-            <Text style={styles.createTitle}>
-              Create
-            </Text>
+            <Text style={styles.createTitle}>Create</Text>
 
             <TouchableOpacity
               style={styles.createOption}
               onPress={() => {
                 setCreateOpen(false);
-                router.push('/create-post');
+                router.push("/create-post");
               }}
             >
               <View style={styles.createIcon}>
-                <Ionicons
-                  name="image-outline"
-                  size={24}
-                  color="#39FF14"
-                />
+                <Ionicons name="image-outline" size={24} color="#39FF14" />
               </View>
 
               <View>
-                <Text style={styles.createOptionTitle}>
-                  Create Post
-                </Text>
+                <Text style={styles.createOptionTitle}>Create Post</Text>
 
                 <Text style={styles.createOptionText}>
                   Share a photo or update
@@ -787,21 +676,15 @@ function openMeetup(meetupId: string) {
               style={styles.createOption}
               onPress={() => {
                 setCreateOpen(false);
-                router.push('../create-meetup');
+                router.push("../create-meetup");
               }}
             >
               <View style={styles.createIcon}>
-                <Ionicons
-                  name="people-outline"
-                  size={24}
-                  color="#39FF14"
-                />
+                <Ionicons name="people-outline" size={24} color="#39FF14" />
               </View>
 
               <View>
-                <Text style={styles.createOptionTitle}>
-                  Create Meetup
-                </Text>
+                <Text style={styles.createOptionTitle}>Create Meetup</Text>
 
                 <Text style={styles.createOptionText}>
                   Plan a ride with other bikers
@@ -813,16 +696,11 @@ function openMeetup(meetupId: string) {
               style={styles.cancelCreate}
               onPress={() => setCreateOpen(false)}
             >
-              <Text style={styles.cancelCreateText}>
-                Cancel
-              </Text>
+              <Text style={styles.cancelCreateText}>Cancel</Text>
             </TouchableOpacity>
-
           </View>
-
         </View>
       </Modal>
-
     </View>
   );
 }

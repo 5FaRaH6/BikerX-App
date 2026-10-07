@@ -14,14 +14,14 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "foregroundImage": "./assets/images/splash-icon.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png",
-        "package": "com.bikerx.platform"
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.BikerXMobile"
+      "package": "com.farahabomokh1234.BikerXMobile",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "output": "static",
@@ -48,6 +48,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "267924dd-a3aa-44f8-9df8-9ca7b4eb6682"
+      }
+    },
+    "owner": "farahabomokh1234"
   }
 }

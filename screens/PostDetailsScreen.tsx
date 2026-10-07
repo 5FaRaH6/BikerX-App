@@ -1,11 +1,20 @@
-import { Ionicons } from '@expo/vector-icons';
-import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Image, Modal, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Ionicons } from "@expo/vector-icons";
+import { router, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  Alert,
+  Image,
+  Modal,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import { API_URL } from '../services/api';
-import { getToken, logout } from '../services/authSession';
-import { styles } from '../styles/PostDetailsStyles';
+import { API_URL } from "../services/api";
+import { getToken, logout } from "../services/authSession";
+import { styles } from "../styles/PostDetailsStyles";
 
 type Post = {
   postId: string;
@@ -31,23 +40,30 @@ type Comment = {
   userPhoto?: string;
   text: string;
   createdAt: string;
+  commentLikes: number;
+  isLiked: boolean;
 };
 
 export default function PostDetailsScreen() {
   const params = useLocalSearchParams();
-  const postId = String(params.postId || '');
+  const postId = String(params.postId || "");
 
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
 
   const [reportOpen, setReportOpen] = useState(false);
-  const [reason, setReason] = useState('');
-  const [description, setDescription] = useState('');
+  const [reason, setReason] = useState("");
+  const [description, setDescription] = useState("");
 
   const [commentsOpen, setCommentsOpen] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);
-  const [commentText, setCommentText] = useState('');
+  const [commentText, setCommentText] = useState("");
   const [commentsLoading, setCommentsLoading] = useState(false);
+
+  const [selectedCommentId, setSelectedCommentId] = useState("");
+  const [commentReportOpen, setCommentReportOpen] = useState(false);
+  const [commentReportReason, setCommentReportReason] = useState("");
+  const [commentReportDescription, setCommentReportDescription] = useState("");
 
   useEffect(() => {
     getPost();
@@ -59,7 +75,7 @@ export default function PostDetailsScreen() {
       const token = await getToken();
 
       if (!token) {
-        router.replace('/login');
+        router.replace("/login");
         return;
       }
 
@@ -71,24 +87,22 @@ export default function PostDetailsScreen() {
 
       if (response.status === 401) {
         await logout();
-        router.replace('/login');
+        router.replace("/login");
         return;
       }
 
       const data = await response.json();
 
       if (!response.ok) {
-        Alert.alert('Error', data.message || 'Could not load post.');
+        Alert.alert("Error", data.message || "Could not load post.");
         return;
       }
 
       setPost(data);
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
-      Alert.alert('Error', 'Could not connect to the server.');
-    }
-    finally {
+      Alert.alert("Error", "Could not connect to the server.");
+    } finally {
       setLoading(false);
     }
   }
@@ -103,7 +117,7 @@ export default function PostDetailsScreen() {
       if (!token) return;
 
       const response = await fetch(`${API_URL}/Posts/${post.postId}/like`, {
-        method: post.isLiked ? 'DELETE' : 'POST',
+        method: post.isLiked ? "DELETE" : "POST",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -114,52 +128,123 @@ export default function PostDetailsScreen() {
       setPost({
         ...post,
         isLiked: !post.isLiked,
-        postLikes: post.isLiked
-          ? post.postLikes - 1
-          : post.postLikes + 1,
+        postLikes: post.isLiked ? post.postLikes - 1 : post.postLikes + 1,
       });
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
     }
   }
 
   // get comments
-async function getComments() {
-  try {
-    setCommentsLoading(true);
+  async function getComments() {
+    try {
+      setCommentsLoading(true);
 
-    const token = await getToken();
+      const token = await getToken();
 
-    if (!token) return;
+      if (!token) return;
 
-    const response = await fetch(
-      `${API_URL}/Posts/${postId}/comments`,
-      {
+      const response = await fetch(`${API_URL}/Posts/${postId}/comments`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) return;
+
+      setComments(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setCommentsLoading(false);
+    }
+  }
+  // add comment
+  async function addComment() {
+    if (!commentText.trim()) {
+      return;
+    }
+
+    try {
+      const token = await getToken();
+
+      if (!token) return;
+
+      const response = await fetch(`${API_URL}/Posts/${postId}/comments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          text: commentText.trim(),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        Alert.alert("Comment", data.message || "Could not add comment.");
+        return;
       }
-    );
 
-    const data = await response.json();
+      setCommentText("");
 
-    if (!response.ok) return;
+      await getComments();
 
-    setComments(data);
+      setPost({
+        ...post!,
+        postComments: post!.postComments + 1,
+      });
+    } catch (error) {
+      console.log(error);
+
+      Alert.alert("Error", "Could not connect to the server.");
+    }
   }
-  catch (error) {
-    console.log(error);
-  }
-  finally {
-    setCommentsLoading(false);
-  }
-}
 
+  // change comment like
+  async function changeCommentLike(comment: Comment) {
+    try {
+      const token = await getToken();
+
+      if (!token) return;
+
+      const response = await fetch(
+        `${API_URL}/Posts/comments/${comment.commentId}/like`,
+        {
+          method: comment.isLiked ? "DELETE" : "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (!response.ok) return;
+
+      setComments(
+        comments.map((item) =>
+          item.commentId === comment.commentId
+            ? {
+                ...item,
+                isLiked: !item.isLiked,
+                commentLikes: item.isLiked
+                  ? item.commentLikes - 1
+                  : item.commentLikes + 1,
+              }
+            : item,
+        ),
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
   // report post
   async function reportPost() {
     if (!reason.trim()) {
-      Alert.alert('Report', 'Please enter a reason.');
+      Alert.alert("Report", "Please enter a reason.");
       return;
     }
 
@@ -169,9 +254,9 @@ async function getComments() {
       if (!token) return;
 
       const response = await fetch(`${API_URL}/Posts/${postId}/report`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
@@ -183,19 +268,64 @@ async function getComments() {
       const data = await response.json();
 
       if (!response.ok) {
-        Alert.alert('Report', data.message || 'Could not report post.');
+        Alert.alert("Report", data.message || "Could not report post.");
         return;
       }
 
       setReportOpen(false);
-      setReason('');
-      setDescription('');
+      setReason("");
+      setDescription("");
 
-      Alert.alert('Report', 'Post reported successfully.');
-    }
-    catch (error) {
+      Alert.alert("Report", "Post reported successfully.");
+    } catch (error) {
       console.log(error);
-      Alert.alert('Error', 'Could not connect to the server.');
+      Alert.alert("Error", "Could not connect to the server.");
+    }
+  }
+  // report comment
+  async function reportComment() {
+    if (!commentReportReason.trim()) {
+      Alert.alert("Report", "Please enter a reason.");
+      return;
+    }
+
+    try {
+      const token = await getToken();
+
+      if (!token) return;
+
+      const response = await fetch(
+        `${API_URL}/Posts/comments/${selectedCommentId}/report`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            reason: commentReportReason.trim(),
+            description: commentReportDescription.trim() || null,
+          }),
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        Alert.alert("Report", data.message || "Could not report comment.");
+        return;
+      }
+
+      setCommentReportOpen(false);
+      setCommentReportReason("");
+      setCommentReportDescription("");
+      setSelectedCommentId("");
+
+      Alert.alert("Report", "Comment reported successfully.");
+    } catch (error) {
+      console.log(error);
+
+      Alert.alert("Error", "Could not connect to the server.");
     }
   }
 
@@ -217,7 +347,6 @@ async function getComments() {
 
   return (
     <View style={styles.container}>
-
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={25} color="#FFFFFF" />
@@ -235,19 +364,14 @@ async function getComments() {
       </View>
 
       <TouchableOpacity
-            style={styles.userRow}
-            activeOpacity={0.7}
-            onPress={() =>
-            router.push(
-      `/user-profile?userId=${post.userId}` as any
-    )
-  }
->
+        style={styles.userRow}
+        activeOpacity={0.7}
+        onPress={() =>
+          router.push(`/user-profile?userId=${post.userId}` as any)
+        }
+      >
         {post.userPhoto ? (
-          <Image
-            source={{ uri: post.userPhoto }}
-            style={styles.userPhoto}
-          />
+          <Image source={{ uri: post.userPhoto }} style={styles.userPhoto} />
         ) : (
           <View style={styles.defaultPhoto}>
             <Text style={styles.defaultPhotoText}>
@@ -268,16 +392,11 @@ async function getComments() {
       <Text style={styles.about}>{post.about}</Text>
 
       {post.description && (
-        <Text style={styles.description}>
-          {post.description}
-        </Text>
+        <Text style={styles.description}>{post.description}</Text>
       )}
 
       {post.imageUrl && (
-        <Image
-          source={{ uri: post.imageUrl }}
-          style={styles.postImage}
-        />
+        <Image source={{ uri: post.imageUrl }} style={styles.postImage} />
       )}
 
       {post.address && (
@@ -288,32 +407,26 @@ async function getComments() {
       )}
 
       <View style={styles.actions}>
-        <TouchableOpacity
-          style={styles.action}
-          onPress={changeLike}
-        >
+        <TouchableOpacity style={styles.action} onPress={changeLike}>
           <Ionicons
-            name={post.isLiked ? 'heart' : 'heart-outline'}
+            name={post.isLiked ? "heart" : "heart-outline"}
             size={23}
-            color={post.isLiked ? '#39FF14' : '#AAAAAA'}
+            color={post.isLiked ? "#39FF14" : "#AAAAAA"}
           />
 
-          <Text style={styles.actionText}>
-            {post.postLikes}
-          </Text>
+          <Text style={styles.actionText}>{post.postLikes}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-            style={styles.action}
-             onPress={() => {
-             setCommentsOpen(true);
-              getComments();
-             }}
-          >
+          style={styles.action}
+          onPress={() => {
+            setCommentsOpen(true);
+            getComments();
+          }}
+        >
+          <Ionicons name="chatbubble-outline" size={21} color="#AAAAAA" />
 
-          <Text style={styles.actionText}>
-            {post.postComments}
-          </Text>
+          <Text style={styles.actionText}>{post.postComments}</Text>
         </TouchableOpacity>
       </View>
 
@@ -344,22 +457,160 @@ async function getComments() {
               multiline
             />
 
-            <TouchableOpacity
-              style={styles.reportButton}
-              onPress={reportPost}
-            >
+            <TouchableOpacity style={styles.reportButton} onPress={reportPost}>
               <Text style={styles.reportButtonText}>Report</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => setReportOpen(false)}
-            >
+            <TouchableOpacity onPress={() => setReportOpen(false)}>
               <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
 
+      <Modal
+        visible={commentsOpen}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setCommentsOpen(false)}
+      >
+        <View style={styles.commentsBackground}>
+          <View style={styles.commentsBox}>
+            <Text style={styles.commentsTitle}>Comments</Text>
+
+            {commentsLoading ? (
+              <ActivityIndicator size="small" color="#39FF14" />
+            ) : comments.length === 0 ? (
+              <Text style={styles.noComments}>No comments yet.</Text>
+            ) : (
+              comments.map((comment) => (
+                <View key={comment.commentId} style={styles.commentRow}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      router.push(
+                        `/user-profile?userId=${comment.userId}` as any,
+                      )
+                    }
+                  >
+                    {comment.userPhoto ? (
+                      <Image
+                        source={{ uri: comment.userPhoto }}
+                        style={styles.commentPhoto}
+                      />
+                    ) : (
+                      <View style={styles.commentDefaultPhoto}>
+                        <Text style={styles.commentDefaultText}>
+                          {comment.username.charAt(0).toUpperCase()}
+                        </Text>
+                      </View>
+                    )}
+                  </TouchableOpacity>
+
+                  <View style={styles.commentContent}>
+                    <TouchableOpacity
+                      onPress={() =>
+                        router.push(
+                          `/user-profile?userId=${comment.userId}` as any,
+                        )
+                      }
+                    >
+                      <Text style={styles.commentUsername}>
+                        @{comment.username}
+                      </Text>
+                    </TouchableOpacity>
+
+                    <Text style={styles.commentText}>{comment.text}</Text>
+                  </View>
+                  <TouchableOpacity
+                    style={styles.commentLike}
+                    onPress={() => changeCommentLike(comment)}
+                  >
+                    <Ionicons
+                      name={comment.isLiked ? "heart" : "heart-outline"}
+                      size={18}
+                      color={comment.isLiked ? "#39FF14" : "#AAAAAA"}
+                    />
+
+                    <Text style={styles.commentLikeText}>
+                      {comment.commentLikes}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelectedCommentId(comment.commentId);
+                      setCommentReportOpen(true);
+                    }}
+                  >
+                    <Ionicons
+                      name="ellipsis-horizontal"
+                      size={20}
+                      color="#AAAAAA"
+                    />
+                  </TouchableOpacity>
+                </View>
+              ))
+            )}
+
+            <View style={styles.addCommentRow}>
+              <TextInput
+                style={styles.commentInput}
+                placeholder="Write a comment..."
+                placeholderTextColor="#777777"
+                value={commentText}
+                onChangeText={setCommentText}
+              />
+
+              <TouchableOpacity
+                style={styles.sendCommentButton}
+                onPress={addComment}
+              >
+                <Ionicons name="send" size={20} color="#050505" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        visible={commentReportOpen}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setCommentReportOpen(false)}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modal}>
+            <Text style={styles.modalTitle}>Report Comment</Text>
+
+            <TextInput
+              style={styles.input}
+              placeholder="Reason"
+              placeholderTextColor="#737373"
+              value={commentReportReason}
+              onChangeText={setCommentReportReason}
+            />
+
+            <TextInput
+              style={[styles.input, styles.descriptionInput]}
+              placeholder="Description (optional)"
+              placeholderTextColor="#737373"
+              value={commentReportDescription}
+              onChangeText={setCommentReportDescription}
+              multiline
+            />
+
+            <TouchableOpacity
+              style={styles.reportButton}
+              onPress={reportComment}
+            >
+              <Text style={styles.reportButtonText}>Report</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => setCommentReportOpen(false)}>
+              <Text style={styles.cancelText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
