@@ -1,9 +1,9 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: "#050505",
   },
 
   scrollContent: {
@@ -13,53 +13,60 @@ export const styles = StyleSheet.create({
   },
 
   title: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 26,
-    fontWeight: '800',
+    fontWeight: "800",
     marginBottom: 25,
   },
 
   item: {
     minHeight: 58,
-    backgroundColor: '#101010',
+    backgroundColor: "#101010",
     borderWidth: 1,
-    borderColor: '#222222',
+    borderColor: "#222222",
     borderRadius: 14,
     paddingHorizontal: 15,
     marginBottom: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 
   itemLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 12,
   },
 
   itemText: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 
   logoutButton: {
     minHeight: 52,
     borderWidth: 1,
-    borderColor: '#3A1B1B',
-    backgroundColor: '#120B0B',
+    borderColor: "#3A1B1B",
+    backgroundColor: "#120B0B",
     borderRadius: 14,
     marginTop: 20,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     gap: 8,
   },
 
   logoutText: {
-    color: '#FF5C5C',
+    color: "#FF5C5C",
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: "700",
+  },
+  sectionTitle: {
+    color: "#A3A3A3",
+    fontSize: 13,
+    fontWeight: "600",
+    marginTop: 10,
+    marginBottom: 10,
   },
 });

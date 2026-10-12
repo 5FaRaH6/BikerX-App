@@ -1,111 +1,111 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: "#050505",
   },
 
   loading: {
     flex: 1,
-    backgroundColor: '#050505',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#050505",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   header: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     zIndex: 10,
-    backgroundColor: '#050505',
+    backgroundColor: "#050505",
     paddingTop: 48,
     paddingHorizontal: 18,
     paddingBottom: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#1D1D1D',
+    borderBottomColor: "#1D1D1D",
   },
 
   topRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 
   logo: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 27,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   logoGreen: {
-    color: '#39FF14',
+    color: "#39FF14",
   },
 
   searchContainer: {
     height: 43,
-    backgroundColor: '#111111',
+    backgroundColor: "#111111",
     borderWidth: 1,
-    borderColor: '#252525',
+    borderColor: "#252525",
     borderRadius: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 13,
     marginTop: 15,
   },
 
   search: {
     flex: 1,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     marginLeft: 7,
   },
 
   tabs: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 14,
   },
 
   tab: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     paddingBottom: 10,
     borderBottomWidth: 2,
-    borderBottomColor: 'transparent',
+    borderBottomColor: "transparent",
   },
 
   activeTab: {
-    borderBottomColor: '#39FF14',
+    borderBottomColor: "#39FF14",
   },
 
   tabText: {
-    color: '#777777',
+    color: "#777777",
     fontSize: 15,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 
   activeTabText: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
 
   list: {
     paddingTop: 190,
     paddingHorizontal: 14,
-    paddingBottom: 110,
+    paddingBottom: 125,
   },
 
   card: {
-    backgroundColor: '#0D0D0D',
+    backgroundColor: "#0D0D0D",
     borderWidth: 1,
-    borderColor: '#202020',
+    borderColor: "#202020",
     borderRadius: 14,
     padding: 14,
     marginBottom: 15,
   },
 
   userRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 12,
   },
 
@@ -120,167 +120,171 @@ export const styles = StyleSheet.create({
     width: 43,
     height: 43,
     borderRadius: 22,
-    backgroundColor: '#202020',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#202020",
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 10,
   },
 
   defaultPhotoText: {
-    color: '#39FF14',
+    color: "#39FF14",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   username: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   smallText: {
-    color: '#777777',
+    color: "#777777",
     fontSize: 12,
     marginTop: 2,
   },
 
   cardTitle: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 7,
   },
 
   description: {
-    color: '#BBBBBB',
+    color: "#BBBBBB",
     fontSize: 14,
     lineHeight: 20,
     marginBottom: 10,
   },
 
   postImage: {
-    width: '100%',
+    width: "100%",
     height: 250,
     borderRadius: 10,
     marginBottom: 12,
   },
 
   meetupImage: {
-    width: '100%',
+    width: "100%",
     height: 190,
     borderRadius: 10,
     marginBottom: 12,
   },
 
   locationRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 8,
   },
 
   location: {
-    color: '#999999',
+    color: "#999999",
     fontSize: 13,
     marginLeft: 5,
     flex: 1,
   },
 
   meetupRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 7,
   },
 
   meetupInfo: {
-    color: '#999999',
+    color: "#999999",
     fontSize: 13,
     marginLeft: 6,
   },
 
   actions: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 22,
     borderTopWidth: 1,
-    borderTopColor: '#202020',
+    borderTopColor: "#202020",
     paddingTop: 12,
     marginTop: 5,
   },
 
   action: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 6,
   },
 
   actionText: {
-    color: '#AAAAAA',
+    color: "#AAAAAA",
     fontSize: 14,
   },
 
   joinButton: {
-    marginLeft: 'auto',
-    backgroundColor: '#39FF14',
+    marginLeft: "auto",
+    backgroundColor: "#39FF14",
     paddingHorizontal: 18,
     paddingVertical: 7,
     borderRadius: 8,
   },
 
   joinedButton: {
-    backgroundColor: '#242424',
+    backgroundColor: "#242424",
   },
 
   joinText: {
-    color: '#050505',
-    fontWeight: 'bold',
+    color: "#050505",
+    fontWeight: "bold",
   },
 
   joinedText: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
 
   error: {
-    position: 'absolute',
+    position: "absolute",
     top: 180,
-    alignSelf: 'center',
+    alignSelf: "center",
     zIndex: 5,
-    color: '#FF5A5A',
+    color: "#FF5A5A",
   },
 
   emptyText: {
-    color: '#777777',
-    textAlign: 'center',
+    color: "#777777",
+    textAlign: "center",
     marginTop: 100,
   },
-
   bottomNav: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 78,
-    backgroundColor: '#090909',
-    borderTopWidth: 1,
-    borderTopColor: '#202020',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingBottom: 7,
+    position: "absolute",
+    bottom: 34,
+    left: 10,
+    right: 10,
+    height: 72,
+
+    backgroundColor: "#090909",
+
+    borderWidth: 1,
+    borderColor: "#202020",
+    borderRadius: 18,
+
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+
+    paddingHorizontal: 5,
   },
 
   navItem: {
-    alignItems: 'center',
+    alignItems: "center",
     width: 55,
   },
 
   navText: {
-    color: '#777777',
+    color: "#777777",
     fontSize: 11,
     marginTop: 4,
   },
 
   navActiveText: {
-    color: '#39FF14',
+    color: "#39FF14",
     fontSize: 11,
     marginTop: 4,
   },
@@ -289,28 +293,28 @@ export const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: '#39FF14',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#39FF14",
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 15,
   },
 
   createModalBackground: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
 
   modalBackdrop: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(0,0,0,0.7)',
+    backgroundColor: "rgba(0,0,0,0.7)",
   },
 
   createModal: {
-    backgroundColor: '#101010',
+    backgroundColor: "#101010",
     borderTopLeftRadius: 22,
     borderTopRightRadius: 22,
     paddingHorizontal: 20,
@@ -322,24 +326,24 @@ export const styles = StyleSheet.create({
     width: 45,
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#444444',
-    alignSelf: 'center',
+    backgroundColor: "#444444",
+    alignSelf: "center",
     marginBottom: 20,
   },
 
   createTitle: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 18,
   },
 
   createOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#181818',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#181818",
     borderWidth: 1,
-    borderColor: '#292929',
+    borderColor: "#292929",
     borderRadius: 12,
     padding: 15,
     marginBottom: 12,
@@ -349,32 +353,59 @@ export const styles = StyleSheet.create({
     width: 46,
     height: 46,
     borderRadius: 23,
-    backgroundColor: '#202020',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#202020",
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 13,
   },
 
   createOptionTitle: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   createOptionText: {
-    color: '#777777',
+    color: "#777777",
     fontSize: 12,
     marginTop: 4,
   },
 
   cancelCreate: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: 10,
     marginTop: 2,
   },
 
   cancelCreateText: {
-    color: '#999999',
+    color: "#999999",
     fontSize: 14,
+  },
+
+  aiButton: {
+    position: "absolute",
+    right: 18,
+    bottom: 120,
+
+    width: 58,
+    height: 58,
+    borderRadius: 29,
+
+    backgroundColor: "#39FF14",
+
+    justifyContent: "center",
+    alignItems: "center",
+
+    zIndex: 20,
+
+    borderWidth: 2,
+    borderColor: "#050505",
+  },
+
+  aiButtonText: {
+    color: "#050505",
+    fontSize: 9,
+    fontWeight: "900",
+    marginTop: -2,
   },
 });

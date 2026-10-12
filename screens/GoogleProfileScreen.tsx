@@ -1,38 +1,48 @@
-import { useState } from 'react';
-import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { router } from 'expo-router';
+import { router } from "expo-router";
+import { useState } from "react";
+import {
+  ActivityIndicator,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import { API_URL } from '../services/api';
-import { saveToken } from '../services/authSession';
-import { clearGoogleSession, getGoogleKeepLoggedIn, getGoogleToken } from '../services/googleSession';
-import { styles } from '../styles/GoogleProfileStyles';
+import { API_URL } from "../services/api";
+import { saveToken } from "../services/authSession";
+import {
+  clearGoogleSession,
+  getGoogleKeepLoggedIn,
+  getGoogleToken,
+} from "../services/googleSession";
+import { styles } from "../styles/GoogleProfileStyles";
 
 export default function GoogleProfileScreen() {
-  const [username, setUsername] = useState('');
-  const [age, setAge] = useState('');
+  const [username, setUsername] = useState("");
+  const [age, setAge] = useState("");
   const [hasBike, setHasBike] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   async function completeProfile() {
-    setError('');
+    setError("");
 
     if (!username.trim() || !age.trim()) {
-      setError('Please fill all fields.');
+      setError("Please fill all fields.");
       return;
     }
 
     const ageNumber = Number(age);
 
     if (ageNumber < 18) {
-      setError('You must be at least 18 years old.');
+      setError("You must be at least 18 years old.");
       return;
     }
 
     const idToken = getGoogleToken();
 
     if (!idToken) {
-      setError('Google login expired. Please try again.');
+      setError("Google login expired. Please try again.");
       return;
     }
 
@@ -40,9 +50,9 @@ export default function GoogleProfileScreen() {
       setLoading(true);
 
       const response = await fetch(`${API_URL}/Auth/google-login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           idToken,
@@ -55,27 +65,25 @@ export default function GoogleProfileScreen() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message || 'Could not create account.');
+        setError(data.message || "Could not create account.");
         return;
       }
 
       const token = data.token || data.Token;
 
       if (!token) {
-        setError('Token was not returned.');
+        setError("Token was not returned.");
         return;
       }
 
       await saveToken(token, getGoogleKeepLoggedIn());
 
       clearGoogleSession();
-      router.replace('/home');
-    }
-    catch (error) {
+      router.replace("/home");
+    } catch (error) {
       console.log(error);
-      setError('Could not connect to the server.');
-    }
-    finally {
+      setError("Could not connect to the server.");
+    } finally {
       setLoading(false);
     }
   }
@@ -111,27 +119,21 @@ export default function GoogleProfileScreen() {
 
       <View style={styles.bikeOptions}>
         <TouchableOpacity
-          style={[
-            styles.bikeButton,
-            hasBike && styles.selectedBikeButton,
-          ]}
+          style={[styles.bikeButton, hasBike && styles.selectedBikeButton]}
           onPress={() => setHasBike(true)}
         >
           <Text style={styles.bikeText}>Yes</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[
-            styles.bikeButton,
-            !hasBike && styles.selectedBikeButton,
-          ]}
+          style={[styles.bikeButton, !hasBike && styles.selectedBikeButton]}
           onPress={() => setHasBike(false)}
         >
           <Text style={styles.bikeText}>No</Text>
         </TouchableOpacity>
       </View>
 
-      {error !== '' && <Text style={styles.error}>{error}</Text>}
+      {error !== "" && <Text style={styles.error}>{error}</Text>}
 
       <TouchableOpacity
         style={styles.continueButton}

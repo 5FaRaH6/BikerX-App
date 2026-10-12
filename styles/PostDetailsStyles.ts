@@ -290,13 +290,13 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   commentLike: {
-  alignItems: 'center',
-  marginRight: 12,
-},
+    alignItems: "center",
+    marginRight: 12,
+  },
 
-commentLikeText: {
-  color: '#AAAAAA',
-  fontSize: 12,
-  marginTop: 2,
-},
+  commentLikeText: {
+    color: "#AAAAAA",
+    fontSize: 12,
+    marginTop: 2,
+  },
 });

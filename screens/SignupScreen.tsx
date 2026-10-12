@@ -1,13 +1,23 @@
-import { useState } from 'react';
-import { ActivityIndicator, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { router } from 'expo-router';
+import { router } from "expo-router";
+import { useState } from "react";
+import {
+  ActivityIndicator,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import { GoogleSignin, isSuccessResponse } from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  isSuccessResponse,
+} from "@react-native-google-signin/google-signin";
 
-import { API_URL } from '../services/api';
-import { saveToken } from '../services/authSession';
-import { saveGoogleSession } from '../services/googleSession';
-import { styles } from '../styles/SignupStyles';
+import { API_URL } from "../services/api";
+import { saveToken } from "../services/authSession";
+import { saveGoogleSession } from "../services/googleSession";
+import { styles } from "../styles/SignupStyles";
 
 GoogleSignin.configure({
   webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
@@ -15,22 +25,29 @@ GoogleSignin.configure({
 });
 
 export default function SignupScreen() {
-  const [fullName, setFullName] = useState('');
-  const [username, setUsername] = useState('');
-  const [age, setAge] = useState('');
-  const [email, setEmail] = useState('');
+  const [fullName, setFullName] = useState("");
+  const [username, setUsername] = useState("");
+  const [age, setAge] = useState("");
+  const [email, setEmail] = useState("");
   const [hasBike, setHasBike] = useState(false);
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   async function signup() {
-    setError('');
+    setError("");
 
-    if ( !fullName.trim() ||!username.trim() || !age.trim() || !email.trim() || !password || !confirmPassword) {
-      setError('Please fill all fields.');
+    if (
+      !fullName.trim() ||
+      !username.trim() ||
+      !age.trim() ||
+      !email.trim() ||
+      !password ||
+      !confirmPassword
+    ) {
+      setError("Please fill all fields.");
       return;
     }
 
@@ -38,9 +55,9 @@ export default function SignupScreen() {
       setLoading(true);
 
       const response = await fetch(`${API_URL}/Auth/register`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           fullName: fullName.trim(),
@@ -56,34 +73,32 @@ export default function SignupScreen() {
       const data = await response.json();
 
       if (!response.ok) {
-        if (typeof data === 'string') {
+        if (typeof data === "string") {
           setError(data);
         } else {
-          setError(data.message || 'Signup failed.');
+          setError(data.message || "Signup failed.");
         }
 
         return;
       }
 
       router.push({
-        pathname: '/verify-email',
+        pathname: "/verify-email",
         params: {
           email: email.trim(),
-          type: 'signup',
+          type: "signup",
         },
       });
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
-      setError('Could not connect to the server.');
-    }
-    finally {
+      setError("Could not connect to the server.");
+    } finally {
       setLoading(false);
     }
   }
 
   async function googleSignup() {
-    setError('');
+    setError("");
 
     try {
       setLoading(true);
@@ -98,14 +113,14 @@ export default function SignupScreen() {
       const idToken = result.data.idToken;
 
       if (!idToken) {
-        setError('Google sign up failed.');
+        setError("Google sign up failed.");
         return;
       }
 
       const response = await fetch(`${API_URL}/Auth/google-login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ idToken }),
       });
@@ -113,36 +128,31 @@ export default function SignupScreen() {
       const data = await response.json();
 
       if (!response.ok) {
-        const message =
-          typeof data === 'string'
-            ? data
-            : data.message;
+        const message = typeof data === "string" ? data : data.message;
 
-        if (message === 'PROFILE_REQUIRED') {
+        if (message === "PROFILE_REQUIRED") {
           saveGoogleSession(idToken, true);
-          router.push('/google-profile');
+          router.push("/google-profile");
           return;
         }
 
-        setError(message || 'Google sign up failed.');
+        setError(message || "Google sign up failed.");
         return;
       }
 
       const token = data.token || data.Token;
 
       if (!token) {
-        setError('Token was not returned.');
+        setError("Token was not returned.");
         return;
       }
 
       await saveToken(token, true);
-      router.replace('/home');
-    }
-    catch (error) {
+      router.replace("/home");
+    } catch (error) {
       console.log(error);
-      setError('Google sign up failed.');
-    }
-    finally {
+      setError("Google sign up failed.");
+    } finally {
       setLoading(false);
     }
   }
@@ -208,20 +218,14 @@ export default function SignupScreen() {
 
       <View style={styles.bikeContainer}>
         <TouchableOpacity
-          style={[
-            styles.bikeButton,
-            hasBike && styles.selectedBikeButton,
-          ]}
+          style={[styles.bikeButton, hasBike && styles.selectedBikeButton]}
           onPress={() => setHasBike(true)}
         >
           <Text style={styles.bikeText}>Yes</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[
-            styles.bikeButton,
-            !hasBike && styles.selectedBikeButton,
-          ]}
+          style={[styles.bikeButton, !hasBike && styles.selectedBikeButton]}
           onPress={() => setHasBike(false)}
         >
           <Text style={styles.bikeText}>No</Text>
@@ -242,7 +246,7 @@ export default function SignupScreen() {
 
         <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
           <Text style={styles.showPassword}>
-            {showPassword ? 'Hide' : 'Show'}
+            {showPassword ? "Hide" : "Show"}
           </Text>
         </TouchableOpacity>
       </View>
@@ -258,7 +262,7 @@ export default function SignupScreen() {
         secureTextEntry={!showPassword}
       />
 
-      {error !== '' && <Text style={styles.error}>{error}</Text>}
+      {error !== "" && <Text style={styles.error}>{error}</Text>}
 
       <TouchableOpacity
         style={styles.signupButton}
@@ -287,15 +291,13 @@ export default function SignupScreen() {
           <Text style={styles.googleIconText}>G</Text>
         </View>
 
-        <Text style={styles.googleButtonText}>
-          Continue with Google
-        </Text>
+        <Text style={styles.googleButtonText}>Continue with Google</Text>
       </TouchableOpacity>
 
       <View style={styles.loginContainer}>
         <Text style={styles.loginText}>Already have an account?</Text>
 
-        <TouchableOpacity onPress={() => router.replace('/login')}>
+        <TouchableOpacity onPress={() => router.replace("/login")}>
           <Text style={styles.loginLink}>Login</Text>
         </TouchableOpacity>
       </View>

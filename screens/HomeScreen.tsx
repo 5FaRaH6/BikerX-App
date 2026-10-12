@@ -592,6 +592,19 @@ export default function HomeScreen() {
         />
       )}
 
+      <TouchableOpacity
+        style={styles.aiButton}
+        onPress={() => router.push("/ai-chat")}
+      >
+        <Ionicons
+          name="chatbubble-ellipses-outline"
+          size={25}
+          color="#050505"
+        />
+
+        <Text style={styles.aiButtonText}>AI</Text>
+      </TouchableOpacity>
+
       <View style={styles.bottomNav}>
         <TouchableOpacity style={styles.navItem}>
           <Ionicons name="home" size={23} color="#39FF14" />

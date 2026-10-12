@@ -1,18 +1,13 @@
-import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import {
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function BeginnerGuideScreen() {
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: '#050505',
+        backgroundColor: "#050505",
       }}
     >
       <ScrollView
@@ -25,8 +20,8 @@ export default function BeginnerGuideScreen() {
       >
         <View
           style={{
-            flexDirection: 'row',
-            alignItems: 'center',
+            flexDirection: "row",
+            alignItems: "center",
             marginBottom: 25,
           }}
         >
@@ -35,21 +30,17 @@ export default function BeginnerGuideScreen() {
             style={{
               width: 40,
               height: 40,
-              justifyContent: 'center',
+              justifyContent: "center",
             }}
           >
-            <Ionicons
-              name="chevron-back"
-              size={26}
-              color="#FFFFFF"
-            />
+            <Ionicons name="chevron-back" size={26} color="#FFFFFF" />
           </TouchableOpacity>
 
           <Text
             style={{
-              color: '#FFFFFF',
+              color: "#FFFFFF",
               fontSize: 24,
-              fontWeight: '800',
+              fontWeight: "800",
             }}
           >
             Beginner Guide
@@ -58,7 +49,7 @@ export default function BeginnerGuideScreen() {
 
         <Text
           style={{
-            color: '#888888',
+            color: "#888888",
             fontSize: 14,
             lineHeight: 20,
             marginBottom: 25,
@@ -107,25 +98,21 @@ function GuideCard({
   return (
     <View
       style={{
-        backgroundColor: '#101010',
+        backgroundColor: "#101010",
         borderWidth: 1,
-        borderColor: '#252525',
+        borderColor: "#252525",
         borderRadius: 16,
         padding: 18,
         marginBottom: 14,
       }}
     >
-      <Ionicons
-        name={icon}
-        size={24}
-        color="#39FF14"
-      />
+      <Ionicons name={icon} size={24} color="#39FF14" />
 
       <Text
         style={{
-          color: '#FFFFFF',
+          color: "#FFFFFF",
           fontSize: 17,
-          fontWeight: '700',
+          fontWeight: "700",
           marginTop: 12,
           marginBottom: 8,
         }}
@@ -135,7 +122,7 @@ function GuideCard({
 
       <Text
         style={{
-          color: '#A0A0A0',
+          color: "#A0A0A0",
           fontSize: 14,
           lineHeight: 21,
         }}

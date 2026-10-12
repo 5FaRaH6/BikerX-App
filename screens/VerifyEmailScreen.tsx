@@ -1,31 +1,37 @@
-import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from "expo-router";
+import { useState } from "react";
+import {
+  ActivityIndicator,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import { API_URL } from '../services/api';
-import { styles } from '../styles/VerifyEmailStyles';
+import { API_URL } from "../services/api";
+import { styles } from "../styles/VerifyEmailStyles";
 
 export default function VerifyEmailScreen() {
   const params = useLocalSearchParams();
 
-  const email = String(params.email || '');
-  const type = String(params.type || 'signup');
+  const email = String(params.email || "");
+  const type = String(params.type || "signup");
 
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   async function verifyCode() {
-    setError('');
+    setError("");
 
     if (!code.trim()) {
-      setError('Please enter the verification code.');
+      setError("Please enter the verification code.");
       return;
     }
 
-    if (type === 'reset') {
+    if (type === "reset") {
       router.push({
-        pathname: '/create-new-password',
+        pathname: "/create-new-password",
         params: {
           email,
           code: code.trim(),
@@ -39,9 +45,9 @@ export default function VerifyEmailScreen() {
       setLoading(true);
 
       const response = await fetch(`${API_URL}/Auth/verify-email`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email,
@@ -52,22 +58,20 @@ export default function VerifyEmailScreen() {
       const data = await response.json();
 
       if (!response.ok) {
-        if (typeof data === 'string') {
+        if (typeof data === "string") {
           setError(data);
         } else {
-          setError(data.message || 'Invalid verification code.');
+          setError(data.message || "Invalid verification code.");
         }
 
         return;
       }
 
-      router.replace('/login');
-    }
-    catch (error) {
+      router.replace("/login");
+    } catch (error) {
       console.log(error);
-      setError('Could not connect to the server.');
-    }
-    finally {
+      setError("Could not connect to the server.");
+    } finally {
       setLoading(false);
     }
   }
@@ -80,9 +84,7 @@ export default function VerifyEmailScreen() {
 
       <Text style={styles.title}>Verify Email</Text>
 
-      <Text style={styles.subtitle}>
-        Enter the verification code sent to
-      </Text>
+      <Text style={styles.subtitle}>Enter the verification code sent to</Text>
 
       <Text style={styles.email}>{email}</Text>
 
@@ -98,7 +100,7 @@ export default function VerifyEmailScreen() {
         maxLength={6}
       />
 
-      {error !== '' && <Text style={styles.error}>{error}</Text>}
+      {error !== "" && <Text style={styles.error}>{error}</Text>}
 
       <TouchableOpacity
         style={styles.button}

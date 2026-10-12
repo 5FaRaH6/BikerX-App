@@ -1,34 +1,33 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-
   container: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: "#050505",
   },
 
   loading: {
     flex: 1,
-    backgroundColor: '#050505',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#050505",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   header: {
     paddingTop: 50,
     paddingHorizontal: 18,
     paddingBottom: 18,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     borderBottomWidth: 1,
-    borderBottomColor: '#202020',
+    borderBottomColor: "#202020",
   },
 
   headerTitle: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 19,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   headerSpace: {
@@ -41,22 +40,22 @@ export const styles = StyleSheet.create({
   },
 
   coverImage: {
-    width: '100%',
+    width: "100%",
     height: 220,
     borderRadius: 14,
     marginBottom: 18,
   },
 
   title: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 15,
   },
 
   userRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 22,
   },
 
@@ -71,145 +70,145 @@ export const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: '#202020',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#202020",
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 10,
   },
 
   defaultPhotoText: {
-    color: '#39FF14',
+    color: "#39FF14",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   username: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   infoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 12,
   },
 
   infoText: {
-    color: '#BBBBBB',
+    color: "#BBBBBB",
     fontSize: 14,
     marginLeft: 9,
     flex: 1,
   },
 
   sectionTitle: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 15,
     marginBottom: 8,
   },
 
   about: {
-    color: '#AAAAAA',
+    color: "#AAAAAA",
     fontSize: 14,
     lineHeight: 21,
   },
 
   ridersRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 22,
   },
 
   ridersText: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     marginLeft: 8,
   },
 
   joinButton: {
-    backgroundColor: '#39FF14',
+    backgroundColor: "#39FF14",
     borderRadius: 10,
     paddingVertical: 14,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 20,
   },
 
   joinedButton: {
-    backgroundColor: '#202020',
+    backgroundColor: "#202020",
   },
 
   joinButtonText: {
-    color: '#050505',
-    fontWeight: 'bold',
+    color: "#050505",
+    fontWeight: "bold",
   },
 
   joinedButtonText: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
 
   actions: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 25,
     borderTopWidth: 1,
-    borderTopColor: '#202020',
+    borderTopColor: "#202020",
     marginTop: 22,
     paddingTop: 15,
   },
 
   action: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 6,
   },
 
   actionText: {
-    color: '#AAAAAA',
+    color: "#AAAAAA",
   },
 
   reportLink: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 25,
   },
 
   reportText: {
-    color: '#FF5A5A',
+    color: "#FF5A5A",
     marginLeft: 7,
   },
 
   errorText: {
-    color: '#FF5A5A',
+    color: "#FF5A5A",
   },
 
   modalBackground: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.75)',
-    justifyContent: 'center',
+    backgroundColor: "rgba(0,0,0,0.75)",
+    justifyContent: "center",
     padding: 25,
   },
 
   modal: {
-    backgroundColor: '#101010',
+    backgroundColor: "#101010",
     borderWidth: 1,
-    borderColor: '#292929',
+    borderColor: "#292929",
     borderRadius: 14,
     padding: 20,
   },
 
   modalTitle: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 18,
   },
 
   input: {
-    backgroundColor: '#181818',
+    backgroundColor: "#181818",
     borderWidth: 1,
-    borderColor: '#292929',
+    borderColor: "#292929",
     borderRadius: 9,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     paddingHorizontal: 13,
     paddingVertical: 12,
     marginBottom: 12,
@@ -217,44 +216,44 @@ export const styles = StyleSheet.create({
 
   descriptionInput: {
     height: 90,
-    textAlignVertical: 'top',
+    textAlignVertical: "top",
   },
 
   reportButton: {
-    backgroundColor: '#39FF14',
+    backgroundColor: "#39FF14",
     borderRadius: 9,
     paddingVertical: 13,
-    alignItems: 'center',
+    alignItems: "center",
   },
 
   reportButtonText: {
-    color: '#050505',
-    fontWeight: 'bold',
+    color: "#050505",
+    fontWeight: "bold",
   },
 
   cancelText: {
-    color: '#AAAAAA',
-    textAlign: 'center',
+    color: "#AAAAAA",
+    textAlign: "center",
     marginTop: 16,
   },
 
   commentsSection: {
     marginTop: 25,
     borderTopWidth: 1,
-    borderTopColor: '#222222',
+    borderTopColor: "#222222",
     paddingTop: 20,
   },
 
   commentsTitle: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 15,
   },
 
   addCommentRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 10,
     marginBottom: 20,
   },
@@ -263,22 +262,22 @@ export const styles = StyleSheet.create({
     flex: 1,
     minHeight: 45,
     maxHeight: 100,
-    backgroundColor: '#151515',
+    backgroundColor: "#151515",
     borderWidth: 1,
-    borderColor: '#2A2A2A',
+    borderColor: "#2A2A2A",
     borderRadius: 14,
     paddingHorizontal: 15,
     paddingVertical: 10,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
 
   sendButton: {
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: '#39FF14',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#39FF14",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   sendButtonDisabled: {
@@ -290,13 +289,13 @@ export const styles = StyleSheet.create({
   },
 
   noComments: {
-    color: '#777777',
-    textAlign: 'center',
+    color: "#777777",
+    textAlign: "center",
     marginVertical: 15,
   },
 
   comment: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 18,
   },
 
@@ -312,15 +311,15 @@ export const styles = StyleSheet.create({
     height: 38,
     borderRadius: 19,
     marginRight: 11,
-    backgroundColor: '#222222',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#222222",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   defaultCommentPhotoText: {
-    color: '#39FF14',
+    color: "#39FF14",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   commentContent: {
@@ -328,35 +327,32 @@ export const styles = StyleSheet.create({
   },
 
   commentTopRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 
   commentUserInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 8,
   },
 
   commentUsername: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   commentDate: {
-    color: '#666666',
+    color: "#666666",
     fontSize: 11,
   },
 
   commentText: {
-    color: '#CCCCCC',
+    color: "#CCCCCC",
     fontSize: 14,
     marginTop: 4,
     lineHeight: 20,
   },
-
-  
-
 });

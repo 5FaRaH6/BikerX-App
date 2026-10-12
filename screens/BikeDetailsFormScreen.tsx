@@ -3,13 +3,13 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 
 import {
-    ActivityIndicator,
-    Alert,
-    ScrollView,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Alert,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 import { API_URL } from "../services/api";
@@ -23,9 +23,6 @@ export default function BikeDetailsFormScreen() {
 
   const [nickname, setNickname] = useState("");
   const [color, setColor] = useState("");
-  const [wheels, setWheels] = useState("");
-  const [exhaust, setExhaust] = useState("");
-  const [windshield, setWindshield] = useState("");
   const [saving, setSaving] = useState(false);
 
   async function addBike() {
@@ -48,9 +45,6 @@ export default function BikeDetailsFormScreen() {
       formData.append("Model3DId", model3DId);
       formData.append("Color", color);
       formData.append("Nickname", nickname);
-      formData.append("Wheels", wheels);
-      formData.append("Exhaust", exhaust);
-      formData.append("Windshield", windshield);
 
       const response = await fetch(`${API_URL}/Bikes`, {
         method: "POST",
@@ -72,7 +66,6 @@ export default function BikeDetailsFormScreen() {
 
       if (!response.ok) {
         Alert.alert("Error", data.message || "Could not add bike");
-
         return;
       }
 
@@ -80,7 +73,6 @@ export default function BikeDetailsFormScreen() {
       router.back();
     } catch (error) {
       console.log("ADD BIKE ERROR:", error);
-
       Alert.alert("Error", "Could not add bike");
     } finally {
       setSaving(false);
@@ -126,36 +118,6 @@ export default function BikeDetailsFormScreen() {
           value={color}
           onChangeText={setColor}
           placeholder="Black, Red, Blue..."
-          placeholderTextColor="#555"
-        />
-
-        <Text style={styles.label}>Wheels</Text>
-
-        <TextInput
-          style={styles.input}
-          value={wheels}
-          onChangeText={setWheels}
-          placeholder="Optional"
-          placeholderTextColor="#555"
-        />
-
-        <Text style={styles.label}>Exhaust</Text>
-
-        <TextInput
-          style={styles.input}
-          value={exhaust}
-          onChangeText={setExhaust}
-          placeholder="Optional"
-          placeholderTextColor="#555"
-        />
-
-        <Text style={styles.label}>Windshield</Text>
-
-        <TextInput
-          style={styles.input}
-          value={windshield}
-          onChangeText={setWindshield}
-          placeholder="Optional"
           placeholderTextColor="#555"
         />
 

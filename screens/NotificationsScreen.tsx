@@ -61,6 +61,36 @@ export default function NotificationsScreen() {
     );
   }
 
+  async function markAsRead(notificationId: string) {
+    try {
+      const token = await getToken();
+
+      if (!token) return;
+
+      const response = await fetch(
+        `${API_URL}/Notifications/${notificationId}/read`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (!response.ok) return;
+
+      setNotifications(
+        notifications.map((item) =>
+          item.notificationId === notificationId
+            ? { ...item, isRead: true }
+            : item,
+        ),
+      );
+    } catch (error) {
+      console.log("MARK AS READ ERROR:", error);
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Notifications</Text>
@@ -75,6 +105,7 @@ export default function NotificationsScreen() {
           keyExtractor={(item) => item.notificationId}
           renderItem={({ item }) => (
             <TouchableOpacity
+              onPress={() => markAsRead(item.notificationId)}
               style={[
                 styles.notification,
                 !item.isRead && styles.unreadNotification,

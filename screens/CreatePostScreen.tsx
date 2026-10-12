@@ -1,29 +1,38 @@
-import { useState } from 'react';
-import { ActivityIndicator, Alert, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import * as ImagePicker from 'expo-image-picker';
+import { Ionicons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
+import { router } from "expo-router";
+import { useState } from "react";
+import {
+  ActivityIndicator,
+  Alert,
+  Image,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import { API_URL } from '../services/api';
-import { getToken } from '../services/authSession';
-import { styles } from '../styles/CreatePostStyles';
+import { API_URL } from "../services/api";
+import { getToken } from "../services/authSession";
+import { styles } from "../styles/CreatePostStyles";
 
 export default function CreatePostScreen() {
-  const [about, setAbout] = useState('');
-  const [description, setDescription] = useState('');
-  const [address, setAddress] = useState('');
+  const [about, setAbout] = useState("");
+  const [description, setDescription] = useState("");
+  const [address, setAddress] = useState("");
   const [image, setImage] = useState<string | null>(null);
   const [allowComments, setAllowComments] = useState(true);
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   // choose image
   async function chooseImage() {
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (!permission.granted) {
-      Alert.alert('Permission', 'Gallery permission is required.');
+      Alert.alert("Permission", "Gallery permission is required.");
       return;
     }
 
@@ -40,10 +49,10 @@ export default function CreatePostScreen() {
 
   // create post
   async function createPost() {
-    setError('');
+    setError("");
 
     if (!about.trim()) {
-      setError('Please enter something about your post.');
+      setError("Please enter something about your post.");
       return;
     }
 
@@ -53,29 +62,29 @@ export default function CreatePostScreen() {
       const token = await getToken();
 
       if (!token) {
-        router.replace('/login');
+        router.replace("/login");
         return;
       }
 
       const formData = new FormData();
 
-      formData.append('About', about.trim());
-      formData.append('Description', description.trim());
-      formData.append('Address', address.trim());
-      formData.append('AllowComments', String(allowComments));
+      formData.append("About", about.trim());
+      formData.append("Description", description.trim());
+      formData.append("Address", address.trim());
+      formData.append("AllowComments", String(allowComments));
 
       if (image) {
-        const fileName = image.split('/').pop() || 'photo.jpg';
+        const fileName = image.split("/").pop() || "photo.jpg";
 
-        formData.append('Photo', {
+        formData.append("Photo", {
           uri: image,
           name: fileName,
-          type: 'image/jpeg',
+          type: "image/jpeg",
         } as any);
       }
 
       const response = await fetch(`${API_URL}/Posts`, {
-        method: 'POST',
+        method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -85,31 +94,24 @@ export default function CreatePostScreen() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message || 'Could not create post.');
+        setError(data.message || "Could not create post.");
         return;
       }
 
-      router.replace('/home');
-    }
-    catch (error) {
+      router.replace("/home");
+    } catch (error) {
       console.log(error);
-      setError('Could not connect to the server.');
-    }
-    finally {
+      setError("Could not connect to the server.");
+    } finally {
       setLoading(false);
     }
   }
 
   return (
     <View style={styles.container}>
-
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons
-            name="close"
-            size={27}
-            color="#FFFFFF"
-          />
+          <Ionicons name="close" size={27} color="#FFFFFF" />
         </TouchableOpacity>
 
         <Text style={styles.headerTitle}>Create Post</Text>
@@ -122,7 +124,6 @@ export default function CreatePostScreen() {
         contentContainerStyle={styles.scroll}
         keyboardShouldPersistTaps="handled"
       >
-
         <Text style={styles.label}>About</Text>
 
         <TextInput
@@ -146,26 +147,14 @@ export default function CreatePostScreen() {
 
         <Text style={styles.label}>Photo</Text>
 
-        <TouchableOpacity
-          style={styles.imageButton}
-          onPress={chooseImage}
-        >
+        <TouchableOpacity style={styles.imageButton} onPress={chooseImage}>
           {image ? (
-            <Image
-              source={{ uri: image }}
-              style={styles.image}
-            />
+            <Image source={{ uri: image }} style={styles.image} />
           ) : (
             <>
-              <Ionicons
-                name="image-outline"
-                size={35}
-                color="#39FF14"
-              />
+              <Ionicons name="image-outline" size={35} color="#39FF14" />
 
-              <Text style={styles.imageButtonText}>
-                Choose Photo
-              </Text>
+              <Text style={styles.imageButtonText}>Choose Photo</Text>
             </>
           )}
         </TouchableOpacity>
@@ -175,20 +164,14 @@ export default function CreatePostScreen() {
             style={styles.removeImage}
             onPress={() => setImage(null)}
           >
-            <Text style={styles.removeImageText}>
-              Remove Photo
-            </Text>
+            <Text style={styles.removeImageText}>Remove Photo</Text>
           </TouchableOpacity>
         )}
 
         <Text style={styles.label}>Location</Text>
 
         <View style={styles.locationInput}>
-          <Ionicons
-            name="location-outline"
-            size={20}
-            color="#39FF14"
-          />
+          <Ionicons name="location-outline" size={20} color="#39FF14" />
 
           <TextInput
             style={styles.locationTextInput}
@@ -204,9 +187,7 @@ export default function CreatePostScreen() {
           onPress={() => setAllowComments(!allowComments)}
         >
           <View>
-            <Text style={styles.commentsTitle}>
-              Allow Comments
-            </Text>
+            <Text style={styles.commentsTitle}>Allow Comments</Text>
 
             <Text style={styles.commentsText}>
               Let people comment on this post
@@ -214,17 +195,13 @@ export default function CreatePostScreen() {
           </View>
 
           <Ionicons
-            name={allowComments ? 'toggle' : 'toggle-outline'}
+            name={allowComments ? "toggle" : "toggle-outline"}
             size={38}
-            color={allowComments ? '#39FF14' : '#777777'}
+            color={allowComments ? "#39FF14" : "#777777"}
           />
         </TouchableOpacity>
 
-        {error !== '' && (
-          <Text style={styles.error}>
-            {error}
-          </Text>
-        )}
+        {error !== "" && <Text style={styles.error}>{error}</Text>}
 
         <TouchableOpacity
           style={styles.postButton}
@@ -234,14 +211,10 @@ export default function CreatePostScreen() {
           {loading ? (
             <ActivityIndicator color="#050505" />
           ) : (
-            <Text style={styles.postButtonText}>
-              Post
-            </Text>
+            <Text style={styles.postButtonText}>Post</Text>
           )}
         </TouchableOpacity>
-
       </ScrollView>
-
     </View>
   );
 }

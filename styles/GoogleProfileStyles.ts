@@ -1,31 +1,30 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-
   container: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: "#050505",
     paddingHorizontal: 25,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
 
   title: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 28,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
   },
 
   subtitle: {
-    color: '#A3A3A3',
+    color: "#A3A3A3",
     fontSize: 14,
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 8,
     marginBottom: 30,
   },
 
   label: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 14,
     marginBottom: 8,
     marginTop: 15,
@@ -33,16 +32,16 @@ export const styles = StyleSheet.create({
 
   input: {
     height: 55,
-    backgroundColor: '#111111',
+    backgroundColor: "#111111",
     borderWidth: 1,
-    borderColor: '#242424',
+    borderColor: "#242424",
     borderRadius: 12,
     paddingHorizontal: 16,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
 
   bikeOptions: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 12,
   },
 
@@ -50,40 +49,39 @@ export const styles = StyleSheet.create({
     flex: 1,
     height: 50,
     borderWidth: 1,
-    borderColor: '#242424',
+    borderColor: "#242424",
     borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#111111',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#111111",
   },
 
   selectedBikeButton: {
-    borderColor: '#39FF14',
+    borderColor: "#39FF14",
   },
 
   bikeText: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
 
   error: {
-    color: '#FF5757',
-    textAlign: 'center',
+    color: "#FF5757",
+    textAlign: "center",
     marginTop: 20,
   },
 
   continueButton: {
     height: 55,
-    backgroundColor: '#39FF14',
+    backgroundColor: "#39FF14",
     borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 30,
   },
 
   continueText: {
-    color: '#050505',
+    color: "#050505",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
-
 });

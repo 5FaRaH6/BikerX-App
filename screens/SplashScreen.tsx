@@ -1,9 +1,9 @@
-import { useEffect, useRef } from 'react';
-import { Animated, View } from 'react-native';
-import { router } from 'expo-router';
+import { router } from "expo-router";
+import { useEffect, useRef } from "react";
+import { Animated, View } from "react-native";
 
-import { getToken } from '../services/authSession';
-import { styles } from '../styles/SplashStyles';
+import { getToken } from "../services/authSession";
+import { styles } from "../styles/SplashStyles";
 
 export default function SplashScreen() {
   const fade = useRef(new Animated.Value(0)).current;
@@ -28,9 +28,9 @@ export default function SplashScreen() {
         useNativeDriver: true,
       }).start(() => {
         if (token) {
-          router.replace('/home');
+          router.replace("/home");
         } else {
-          router.replace('/login');
+          router.replace("/login");
         }
       });
     }, 1800);
@@ -39,7 +39,7 @@ export default function SplashScreen() {
   return (
     <View style={styles.container}>
       <Animated.Image
-        source={require('../assets/images/bikerx-logo.png')}
+        source={require("../assets/images/bikerx-logo.png")}
         style={[styles.logo, { opacity: fade }]}
         resizeMode="contain"
       />

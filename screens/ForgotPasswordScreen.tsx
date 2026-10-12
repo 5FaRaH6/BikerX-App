@@ -1,20 +1,26 @@
-import { useState } from 'react';
-import {View,Text,TextInput,TouchableOpacity,ActivityIndicator} from 'react-native';
-import { router } from 'expo-router';
+import { router } from "expo-router";
+import { useState } from "react";
+import {
+  ActivityIndicator,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import { API_URL } from '../services/api';
-import { styles } from '../styles/ForgotPasswordStyles';
+import { API_URL } from "../services/api";
+import { styles } from "../styles/ForgotPasswordStyles";
 
 export default function ForgotPasswordScreen() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   async function sendCode() {
-    setError('');
+    setError("");
 
     if (!email.trim()) {
-      setError('Please enter your email.');
+      setError("Please enter your email.");
       return;
     }
 
@@ -22,9 +28,9 @@ export default function ForgotPasswordScreen() {
       setLoading(true);
 
       const response = await fetch(`${API_URL}/Auth/forgot-password`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: email.trim(),
@@ -34,28 +40,26 @@ export default function ForgotPasswordScreen() {
       const data = await response.json();
 
       if (!response.ok) {
-        if (typeof data === 'string') {
+        if (typeof data === "string") {
           setError(data);
         } else {
-          setError(data.message || 'Could not send code.');
+          setError(data.message || "Could not send code.");
         }
 
         return;
       }
 
       router.push({
-        pathname: '/verify-email',
+        pathname: "/verify-email",
         params: {
           email: email.trim(),
-          type: 'reset',
+          type: "reset",
         },
       });
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
-      setError('Could not connect to the server.');
-    }
-    finally {
+      setError("Could not connect to the server.");
+    } finally {
       setLoading(false);
     }
   }
@@ -84,9 +88,7 @@ export default function ForgotPasswordScreen() {
         autoCapitalize="none"
       />
 
-      {error !== '' && (
-        <Text style={styles.error}>{error}</Text>
-      )}
+      {error !== "" && <Text style={styles.error}>{error}</Text>}
 
       <TouchableOpacity
         style={styles.button}

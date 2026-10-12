@@ -3,20 +3,20 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#080808",
+    backgroundColor: "#050505",
   },
 
-  loadingContainer: {
+  loading: {
     flex: 1,
-    backgroundColor: "#080808",
+    backgroundColor: "#050505",
     justifyContent: "center",
     alignItems: "center",
   },
 
   scrollContent: {
-    paddingTop: 50,
     paddingHorizontal: 20,
-    paddingBottom: 50,
+    paddingTop: 55,
+    paddingBottom: 55,
   },
 
   header: {
@@ -27,28 +27,25 @@ export const styles = StyleSheet.create({
   },
 
   backButton: {
-    width: 42,
-    height: 42,
+    width: 40,
+    height: 40,
     justifyContent: "center",
+    alignItems: "flex-start",
+  },
+
+  headerTitle: {
+    color: "#FFFFFF",
+    fontSize: 21,
+    fontWeight: "800",
   },
 
   headerSpace: {
-    width: 42,
-  },
-
-  title: {
-    color: "#FFFFFF",
-    fontSize: 22,
-    fontWeight: "700",
+    width: 40,
   },
 
   photoSection: {
     alignItems: "center",
-    marginBottom: 35,
-  },
-
-  photoWrapper: {
-    position: "relative",
+    marginBottom: 25,
   },
 
   profilePhoto: {
@@ -59,13 +56,13 @@ export const styles = StyleSheet.create({
     borderColor: "#39FF14",
   },
 
-  defaultPhoto: {
+  photoPlaceholder: {
     width: 105,
     height: 105,
     borderRadius: 53,
-    backgroundColor: "#131313",
+    backgroundColor: "#111111",
     borderWidth: 2,
-    borderColor: "#39FF14",
+    borderColor: "#292929",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -74,99 +71,102 @@ export const styles = StyleSheet.create({
     position: "absolute",
     right: 0,
     bottom: 3,
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 34,
+    height: 34,
+    borderRadius: 17,
     backgroundColor: "#39FF14",
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 3,
-    borderColor: "#080808",
+    borderColor: "#050505",
   },
 
   changePhotoText: {
     color: "#39FF14",
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: "600",
-    marginTop: 12,
-  },
-
-  inputGroup: {
-    marginBottom: 21,
+    marginTop: 10,
   },
 
   label: {
-    color: "#FFFFFF",
+    color: "#CFCFCF",
     fontSize: 13,
-    fontWeight: "600",
+    fontWeight: "700",
+    marginTop: 16,
     marginBottom: 8,
   },
 
   input: {
-    minHeight: 50,
-    backgroundColor: "#111111",
+    minHeight: 54,
+    backgroundColor: "#101010",
     borderWidth: 1,
-    borderColor: "#303030",
+    borderColor: "#252525",
+    borderRadius: 15,
+    paddingHorizontal: 15,
     color: "#FFFFFF",
-    paddingHorizontal: 14,
-    fontSize: 14,
+    fontSize: 15,
   },
 
-  usernameContainer: {
-    minHeight: 50,
-    backgroundColor: "#111111",
+  usernameInput: {
+    minHeight: 54,
+    backgroundColor: "#101010",
     borderWidth: 1,
-    borderColor: "#303030",
+    borderColor: "#252525",
+    borderRadius: 15,
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 14,
+    paddingHorizontal: 15,
   },
 
   atText: {
     color: "#39FF14",
-    fontSize: 15,
-    fontWeight: "700",
-    marginRight: 3,
+    fontSize: 16,
+    fontWeight: "800",
+    marginRight: 2,
   },
 
-  usernameInput: {
+  usernameTextInput: {
     flex: 1,
     color: "#FFFFFF",
-    fontSize: 14,
+    fontSize: 15,
   },
 
   bioHeader: {
     flexDirection: "row",
+    alignItems: "flex-end",
     justifyContent: "space-between",
-  },
-
-  bioInput: {
-    height: 110,
-    paddingTop: 13,
   },
 
   bioCount: {
     color: "#666666",
     fontSize: 11,
+    marginBottom: 8,
+  },
+
+  bioInput: {
+    minHeight: 110,
+    paddingTop: 14,
   },
 
   saveButton: {
-    height: 52,
+    minHeight: 56,
     backgroundColor: "#39FF14",
+    borderRadius: 15,
+    marginTop: 34,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     gap: 7,
-    marginTop: 10,
   },
 
   disabledButton: {
-    opacity: 0.6,
+    opacity: 0.4,
   },
 
   saveButtonText: {
     color: "#050505",
     fontSize: 14,
-    fontWeight: "800",
+    fontWeight: "900",
+    letterSpacing: 0.7,
   },
 });

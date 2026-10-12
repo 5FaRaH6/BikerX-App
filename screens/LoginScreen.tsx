@@ -19,13 +19,12 @@ import {
 import { API_URL } from "../services/api";
 import { saveToken } from "../services/authSession";
 import { saveGoogleSession } from "../services/googleSession";
+import { savePushToken } from "../services/pushNotifications";
 import { styles } from "../styles/LoginStyles";
-import { savePushToken } from '../services/pushNotifications';
-
 
 console.log(
-  'GOOGLE CLIENT LOADED:',
-  !!process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID
+  "GOOGLE CLIENT LOADED:",
+  !!process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
 );
 
 GoogleSignin.configure({
@@ -77,7 +76,7 @@ export default function LoginScreen() {
       }
 
       await saveToken(token, keepLoggedIn);
-      console.log('BEFORE SAVE PUSH TOKEN');
+      console.log("BEFORE SAVE PUSH TOKEN");
       await savePushToken();
       router.replace("/home");
     } catch (error) {

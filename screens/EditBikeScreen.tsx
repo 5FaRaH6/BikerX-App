@@ -1,6 +1,6 @@
-import { Ionicons } from '@expo/vector-icons';
-import { router, useFocusEffect } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { Ionicons } from "@expo/vector-icons";
+import { router, useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
 
 import {
   ActivityIndicator,
@@ -10,11 +10,11 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from 'react-native';
+} from "react-native";
 
-import { API_URL } from '../services/api';
-import { getToken } from '../services/authSession';
-import { styles } from '../styles/EditBikeStyles';
+import { API_URL } from "../services/api";
+import { getToken } from "../services/authSession";
+import { styles } from "../styles/EditBikeStyle";
 
 type Bike = {
   nickname?: string;
@@ -22,15 +22,15 @@ type Bike = {
 };
 
 export default function EditBikeScreen() {
-  const [nickname, setNickname] = useState('');
-  const [color, setColor] = useState('');
+  const [nickname, setNickname] = useState("");
+  const [color, setColor] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
       loadBike();
-    }, [])
+    }, []),
   );
 
   async function loadBike() {
@@ -38,31 +38,26 @@ export default function EditBikeScreen() {
       const token = await getToken();
 
       if (!token) {
-        router.replace('/login');
+        router.replace("/login");
         return;
       }
 
-      const response = await fetch(
-        `${API_URL}/Bikes/me`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${API_URL}/Bikes/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
         return;
       }
 
-      const data: Bike =
-        await response.json();
+      const data: Bike = await response.json();
 
-      setNickname(data.nickname || '');
+      setNickname(data.nickname || "");
       setColor(data.color);
-
     } catch (error) {
-      console.log('EDIT BIKE ERROR:', error);
+      console.log("EDIT BIKE ERROR:", error);
     } finally {
       setLoading(false);
     }
@@ -79,25 +74,22 @@ export default function EditBikeScreen() {
       const token = await getToken();
 
       if (!token) {
-        router.replace('/login');
+        router.replace("/login");
         return;
       }
 
       const formData = new FormData();
 
-      formData.append('Nickname', nickname);
-      formData.append('Color', color);
+      formData.append("Nickname", nickname);
+      formData.append("Color", color);
 
-      const response = await fetch(
-        `${API_URL}/Bikes/me`,
-        {
-          method: 'PUT',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
+      const response = await fetch(`${API_URL}/Bikes/me`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
 
       const text = await response.text();
 
@@ -110,23 +102,15 @@ export default function EditBikeScreen() {
       }
 
       if (!response.ok) {
-        Alert.alert(
-          'Error',
-          data.message ||
-            'Could not update bike'
-        );
+        Alert.alert("Error", data.message || "Could not update bike");
         return;
       }
 
       router.back();
-
     } catch (error) {
-      console.log('EDIT BIKE ERROR:', error);
+      console.log("EDIT BIKE ERROR:", error);
 
-      Alert.alert(
-        'Error',
-        'Could not update bike'
-      );
+      Alert.alert("Error", "Could not update bike");
     } finally {
       setSaving(false);
     }
@@ -135,10 +119,7 @@ export default function EditBikeScreen() {
   if (loading) {
     return (
       <View style={styles.loading}>
-        <ActivityIndicator
-          size="large"
-          color="#39FF14"
-        />
+        <ActivityIndicator size="large" color="#39FF14" />
       </View>
     );
   }
@@ -151,31 +132,21 @@ export default function EditBikeScreen() {
       >
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()}>
-            <Ionicons
-              name="chevron-back"
-              size={26}
-              color="#FFFFFF"
-            />
+            <Ionicons name="chevron-back" size={26} color="#FFFFFF" />
           </TouchableOpacity>
 
-          <Text style={styles.headerTitle}>
-            Edit Bike
-          </Text>
+          <Text style={styles.headerTitle}>Edit Bike</Text>
 
           <View style={{ width: 26 }} />
         </View>
 
-        <Text style={styles.title}>
-          Update your bike
-        </Text>
+        <Text style={styles.title}>Update your bike</Text>
 
         <Text style={styles.description}>
           Change the basic details of your bike.
         </Text>
 
-        <Text style={styles.label}>
-          Nickname
-        </Text>
+        <Text style={styles.label}>Nickname</Text>
 
         <TextInput
           style={styles.input}
@@ -185,9 +156,7 @@ export default function EditBikeScreen() {
           placeholderTextColor="#555555"
         />
 
-        <Text style={styles.label}>
-          Color
-        </Text>
+        <Text style={styles.label}>Color</Text>
 
         <TextInput
           style={styles.input}
@@ -200,21 +169,15 @@ export default function EditBikeScreen() {
         <TouchableOpacity
           style={[
             styles.saveButton,
-            (!color || saving) &&
-              styles.disabledButton,
+            (!color || saving) && styles.disabledButton,
           ]}
           disabled={!color || saving}
           onPress={saveBike}
         >
           {saving ? (
-            <ActivityIndicator
-              size="small"
-              color="#050505"
-            />
+            <ActivityIndicator size="small" color="#050505" />
           ) : (
-            <Text style={styles.saveButtonText}>
-              SAVE CHANGES
-            </Text>
+            <Text style={styles.saveButtonText}>SAVE CHANGES</Text>
           )}
         </TouchableOpacity>
       </ScrollView>

@@ -1,77 +1,77 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: "#050505",
   },
 
   loading: {
     flex: 1,
-    backgroundColor: '#050505',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#050505",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   scrollContent: {
     paddingHorizontal: 20,
     paddingTop: 55,
-    paddingBottom: 40,
+    paddingBottom: 50,
   },
 
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 28,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 30,
   },
 
   headerTitle: {
-    color: '#FFFFFF',
-    fontSize: 20,
-    fontWeight: '700',
+    color: "#FFFFFF",
+    fontSize: 21,
+    fontWeight: "800",
   },
 
   title: {
-    color: '#FFFFFF',
-    fontSize: 26,
-    fontWeight: '800',
+    color: "#FFFFFF",
+    fontSize: 27,
+    fontWeight: "900",
   },
 
   description: {
-    color: '#888888',
+    color: "#888888",
     fontSize: 14,
-    lineHeight: 20,
+    lineHeight: 21,
     marginTop: 8,
-    marginBottom: 28,
+    marginBottom: 26,
   },
 
   label: {
-    color: '#BDBDBD',
+    color: "#CFCFCF",
     fontSize: 13,
-    fontWeight: '600',
+    fontWeight: "700",
+    marginTop: 18,
     marginBottom: 8,
-    marginTop: 16,
   },
 
   input: {
-    minHeight: 52,
-    backgroundColor: '#101010',
+    minHeight: 54,
+    backgroundColor: "#101010",
     borderWidth: 1,
-    borderColor: '#1F1F1F',
-    borderRadius: 14,
+    borderColor: "#252525",
+    borderRadius: 15,
     paddingHorizontal: 15,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 15,
   },
 
   saveButton: {
-    minHeight: 54,
-    backgroundColor: '#39FF14',
-    borderRadius: 14,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 32,
+    minHeight: 56,
+    backgroundColor: "#39FF14",
+    borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 34,
   },
 
   disabledButton: {
@@ -79,9 +79,9 @@ export const styles = StyleSheet.create({
   },
 
   saveButtonText: {
-    color: '#050505',
+    color: "#050505",
     fontSize: 14,
-    fontWeight: '800',
-    letterSpacing: 0.7,
+    fontWeight: "900",
+    letterSpacing: 0.8,
   },
 });

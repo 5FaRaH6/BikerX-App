@@ -1,12 +1,99 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
+import { ScrollView, Switch, Text, TouchableOpacity, View } from "react-native";
 
-import { logout } from "../services/authSession";
+import { API_URL } from "../services/api";
+import { getToken, logout } from "../services/authSession";
 import { styles } from "../styles/SettingsStyles";
 
+type RideModeSettings = {
+  rideModeSettingsId?: string;
+  userId?: string;
+  reduceNotifications: boolean;
+  allowPriorityCalls: boolean;
+  trackLocationDuringRide: boolean;
+  shareLocationInEmergency: boolean;
+  fallDetection: boolean;
+  emergencyCountdown: number;
+  flashScreenInEmergency: boolean;
+  enableMusicDuringRide: boolean;
+  voiceCommands: boolean;
+  voiceConfirmation: boolean;
+};
+
 export default function SettingsScreen() {
+  const [rideSettings, setRideSettings] = useState<RideModeSettings | null>(
+    null,
+  );
+
+  const [savingFall, setSavingFall] = useState(false);
+
+  useEffect(() => {
+    getRideSettings();
+  }, []);
+
+  async function getRideSettings() {
+    try {
+      const token = await getToken();
+
+      if (!token) return;
+
+      const response = await fetch(`${API_URL}/Rides/settings`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) return;
+
+      const data = await response.json();
+
+      setRideSettings(data);
+    } catch (error) {
+      console.log("RIDE SETTINGS ERROR:", error);
+    }
+  }
+
+  async function changeFallDetection(value: boolean) {
+    if (!rideSettings || savingFall) return;
+
+    const oldSettings = rideSettings;
+
+    const updatedSettings = {
+      ...rideSettings,
+      fallDetection: value,
+    };
+
+    setRideSettings(updatedSettings);
+    setSavingFall(true);
+
+    try {
+      const token = await getToken();
+
+      if (!token) return;
+
+      const response = await fetch(`${API_URL}/Rides/settings`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedSettings),
+      });
+
+      if (!response.ok) {
+        setRideSettings(oldSettings);
+      }
+    } catch (error) {
+      console.log("FALL DETECTION ERROR:", error);
+      setRideSettings(oldSettings);
+    } finally {
+      setSavingFall(false);
+    }
+  }
+
   async function handleLogout() {
     await logout();
     router.replace("/login");
@@ -20,6 +107,21 @@ export default function SettingsScreen() {
       >
         <Text style={styles.title}>Settings</Text>
 
+        <Text style={styles.sectionTitle}>Account</Text>
+
+        <TouchableOpacity
+          style={styles.item}
+          onPress={() => router.push("/edit-profile")}
+        >
+          <View style={styles.itemLeft}>
+            <Ionicons name="person-outline" size={21} color="#39FF14" />
+
+            <Text style={styles.itemText}>Edit Profile</Text>
+          </View>
+
+          <Ionicons name="chevron-forward" size={20} color="#666666" />
+        </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.item}
           onPress={() => router.push("/beginner-guide" as any)}
@@ -28,6 +130,21 @@ export default function SettingsScreen() {
             <Ionicons name="book-outline" size={21} color="#39FF14" />
 
             <Text style={styles.itemText}>Beginner Guide</Text>
+          </View>
+
+          <Ionicons name="chevron-forward" size={20} color="#666666" />
+        </TouchableOpacity>
+
+        <Text style={styles.sectionTitle}>Safety & Ride</Text>
+
+        <TouchableOpacity
+          style={styles.item}
+          onPress={() => router.push("/emergency-contact")}
+        >
+          <View style={styles.itemLeft}>
+            <Ionicons name="call-outline" size={21} color="#39FF14" />
+
+            <Text style={styles.itemText}>Emergency Contact</Text>
           </View>
 
           <Ionicons name="chevron-forward" size={20} color="#666666" />
@@ -45,19 +162,24 @@ export default function SettingsScreen() {
 
           <Ionicons name="chevron-forward" size={20} color="#666666" />
         </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.item}
-          onPress={() => router.push("/notification-settings" as any)}
-        >
+        <View style={styles.item}>
           <View style={styles.itemLeft}>
-            <Ionicons name="notifications-outline" size={21} color="#39FF14" />
+            <Ionicons name="warning-outline" size={21} color="#39FF14" />
 
-            <Text style={styles.itemText}>Notifications</Text>
+            <Text style={styles.itemText}>Fall Detection</Text>
           </View>
 
-          <Ionicons name="chevron-forward" size={20} color="#666666" />
-        </TouchableOpacity>
+          <Switch
+            value={rideSettings?.fallDetection ?? false}
+            onValueChange={changeFallDetection}
+            disabled={!rideSettings || savingFall}
+            trackColor={{
+              false: "#333333",
+              true: "#39FF14",
+            }}
+            thumbColor="#FFFFFF"
+          />
+        </View>
 
         <TouchableOpacity
           style={styles.item}
@@ -67,19 +189,6 @@ export default function SettingsScreen() {
             <Ionicons name="lock-closed-outline" size={21} color="#39FF14" />
 
             <Text style={styles.itemText}>Privacy</Text>
-          </View>
-
-          <Ionicons name="chevron-forward" size={20} color="#666666" />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.item}
-          onPress={() => router.push("/change-password" as any)}
-        >
-          <View style={styles.itemLeft}>
-            <Ionicons name="key-outline" size={21} color="#39FF14" />
-
-            <Text style={styles.itemText}>Change Password</Text>
           </View>
 
           <Ionicons name="chevron-forward" size={20} color="#666666" />
